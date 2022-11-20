@@ -12,8 +12,6 @@ import CookieConsent from "react-cookie-consent"
 import Header from '../components/header'
 import Footer from '../components/footer'
 
-import { RouterScrollProvider } from '@moxy/next-router-scroll';
-
 
 function MyApp({ Component, pageProps, router }) {
 
@@ -39,10 +37,8 @@ function MyApp({ Component, pageProps, router }) {
         onDecline={() => {}}
         >
         <Body content={pageProps.data?.menuData.cookietext} />
-      </CookieConsent> */}
-      <RouterScrollProvider>     
-        <Component {...pageProps} />
-      </RouterScrollProvider> 
+      </CookieConsent> */}   
+      <Component {...pageProps} />
       <Footer data={pageProps.data?.footerData}/>
     </>
   )
