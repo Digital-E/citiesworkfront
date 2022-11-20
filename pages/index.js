@@ -8,6 +8,7 @@ import { SITE_NAME } from '../lib/constants'
 import { homeQuery, previewHomeQuery, menuQuery, footerQuery } from '../lib/queries'
 import { getClient } from '../lib/sanity.server'
 
+import Grid from '../components/home/grid'
 import Zoom from '../components/home/zoom'
 
 const Container = styled.div`
@@ -47,7 +48,8 @@ export default function Index({ data = {}, preview }) {
           />
         </Head>
         <Container>
-          <Zoom />
+            <Grid />
+            <Zoom />
         </Container>
       </Layout>
     </>

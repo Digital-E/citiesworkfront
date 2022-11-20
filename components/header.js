@@ -4,6 +4,8 @@ import Link from './link'
 import LocaleLink from "./locale-link"
 import styled from "styled-components"
 
+import Button from './button'
+
 let Container = styled.header`
   position: fixed;
   width: 100%;
@@ -15,16 +17,7 @@ let Container = styled.header`
   top: 0;
   box-sizing: border-box;
 
-  max-width: 1800px;
-
-  > .h4 {
-    z-index: 2;
-  }
-
-  > div:nth-child(1) > a {
-    color: black;
-  }
-
+  // max-width: 1800px;
 
   .p {
    margin: 0;
@@ -161,11 +154,13 @@ export default function Header({ data }) {
 
   return (
     <Container className={menuOpen ? "nav--open" : ""}>
-      <div className="h4" 
+      <div
         onClick={() => {setMenuOpen(false);}}>
-          <Link href={`/${router.asPath.split("/")[1]}`}>
-            Cities.work
-          </Link>
+          <Button>
+            <Link href={`/${router.asPath.split("/")[1]}`}>
+              cities.work
+            </Link>
+          </Button>
       </div>
       <div class="nav-mobile-burger" onClick={() => setMenuOpen(!menuOpen)}>
         <div></div>

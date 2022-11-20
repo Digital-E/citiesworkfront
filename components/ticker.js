@@ -9,10 +9,10 @@ gsap.registerPlugin(ScrollTrigger);
 
 const Container = styled.div`
   position: fixed;
-  width: calc(100% - 40px);
+  width: calc(100% - 80px);
   left: 50%;
   transform: translateX(-50%);
-  bottom: 20px;
+  bottom: 60px;
   overflow: hidden;
   border-radius: 999px;
   border: 1px solid black;
@@ -23,6 +23,7 @@ const Container = styled.div`
 
   .ticker {
     display: flex;
+    background: white;
   }
 
   .ticker__list {

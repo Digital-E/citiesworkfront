@@ -38,6 +38,7 @@
 
 body {
     position: relative;
+    background: #F2F2F2;
 }
 
 .body-lock {
@@ -52,18 +53,6 @@ html {
     --transition-in: 0.2s;
     --transition-out: 0.3s;
     --lateral-padding: 0 20px;
-}
-
-.layout {
-    padding: 200px 20px 0 20px;
-    min-height: calc(100vh - 80.8px);
-}
-
-@media (max-width: 989px) {
-    .layout {
-        padding: 130px 20px 0 20px;
-        min-height: calc(100vh - 231px);
-    }   
 }
 
 .border-top::before {
@@ -172,16 +161,16 @@ a:hover, button:hover {
     border: 1px solid black !important;
   }
 
-  @media(min-width: 1800px) {
+  /* @media(min-width: 1800px) {
       html {
           max-width: 1800px;
           margin: 0 auto;
       }
-  }
+  } */
 
-  header {
+  /* header {
       background: white;
-  }
+  } */
 
 /* -------------------------------------------------------------------------- */
 /*                                    Fonts                                   */
