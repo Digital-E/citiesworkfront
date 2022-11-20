@@ -10,14 +10,11 @@ let Container = styled.header`
   position: fixed;
   width: 100%;
   display: flex;
-  justify-content: space-between;
   align-items: center;
   padding: 10px 20px;
   z-index: 2;
   top: 0;
   box-sizing: border-box;
-
-  // max-width: 1800px;
 
   .p {
    margin: 0;
@@ -72,29 +69,21 @@ let Container = styled.header`
 let List = styled.ul`
   display: flex;
   flex-direction: column;
-  width: 100%;
-  justify-content: flex-start;
 `
 
 let ListItem = styled.li`
+  width: fit-content;
 `
 
 let Menu = styled.div`
   display: flex;
-  justify-content: flex-end;
   top: 0;
   left: 0;
   width: 100%;
-  flex-basis: 65%;
-  // max-width: 1100px;
-
-  > ul:nth-child(1) > li {
-    margin-right: 3rem;
-  }
   
 
   ${ListItem} {
-    margin-left: 0;
+    margin-left: 10px;
   }
 
   @media(max-width: 989px) {
@@ -116,27 +105,6 @@ let Menu = styled.div`
 
     &.nav--open {
       display: flex;
-    }
-  }
-`
-
-
-let LanguageSwitch = styled.div`
-  margin-left: 80px;
-  width: fit-content;
-
-  ${ListItem} {
-    margin-left: 15px;
-  }
-
-
-  @media(max-width: 989px) {
-    margin-left: 0;
-    margin-top: 20px;
-
-    ${ListItem} {
-      margin-left: 0;
-      margin-right: 10px;
     }
   }
 `
@@ -172,7 +140,7 @@ export default function Header({ data }) {
           {
           data?.menuItems?.map((item, index) => {
             let isLast = index === data.menuItems.length - 1 ? true : false
-            return <ListItem key={item._id}  onClick={() => setMenuOpen(false)} ><div className="h4"><Link href={item.url} isMenu={true} isLast={isLast}>{item.label}</Link></div></ListItem>
+            return <ListItem key={item._id}  onClick={() => setMenuOpen(false)} ><Button><Link href={item.url} isMenu={true}>{item.label}</Link></Button></ListItem>
           })
           }
         </List>

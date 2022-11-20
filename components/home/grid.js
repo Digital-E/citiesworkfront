@@ -22,6 +22,13 @@ const Grid = styled.div`
     width: 100vw;
     height: 100vh;
 
+    img {
+        position: absolute;
+        object-fit: cover;
+        height: 100%;
+        width: 100%;
+    }
+
     @media(max-width: 989px) {
       
     }
