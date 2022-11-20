@@ -2,14 +2,14 @@ import { useEffect, useState } from 'react'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 import ErrorPage from 'next/error'
-import Layout from '../../components/layout'
-import { SITE_NAME } from '../../lib/constants'
-import { aboutQuery, previewAboutQuery, menuQuery, footerQuery } from '../../lib/queries'
-import { getClient } from '../../lib/sanity.server'
+import Layout from '../components/layout'
+import { SITE_NAME } from '../lib/constants'
+import { aboutQuery, previewAboutQuery, menuQuery, footerQuery } from '../lib/queries'
+import { getClient } from '../lib/sanity.server'
 
 import styled from 'styled-components'
 
-import Body from "../../components/body"
+import Body from "../components/body"
 
 const Container = styled.div`
     display: flex;
