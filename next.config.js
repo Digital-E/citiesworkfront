@@ -1,5 +1,6 @@
 
 module.exports = {
+  swcMinify: false,
   images: {
     domains: ['cdn.sanity.io'],
   },
