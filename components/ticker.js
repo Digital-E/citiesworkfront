@@ -165,7 +165,7 @@ export default function Component() {
     let list = document.querySelector('.ticker__list')
     let clone = list.cloneNode(true)
 
-    ticker.append(clone)
+    ticker.append(clone);
 
   }, [all])
 
