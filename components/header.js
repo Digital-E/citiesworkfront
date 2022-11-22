@@ -11,7 +11,7 @@ let Container = styled.header`
   width: 100%;
   display: flex;
   align-items: center;
-  padding: 10px 20px;
+  padding: 30px 30px;
   z-index: 2;
   top: 0;
   box-sizing: border-box;
@@ -126,7 +126,7 @@ export default function Header({ data }) {
         onClick={() => {setMenuOpen(false);}}>
           <Button>
             <Link href={`/${router.asPath.split("/")[1]}`}>
-              cities.work
+              <span>cities.work</span>
             </Link>
           </Button>
       </div>
@@ -140,7 +140,7 @@ export default function Header({ data }) {
           {
           data?.menuItems?.map((item, index) => {
             let isLast = index === data.menuItems.length - 1 ? true : false
-            return <ListItem key={item._id}  onClick={() => setMenuOpen(false)} ><Button><Link href={item.url} isMenu={true}>{item.label}</Link></Button></ListItem>
+            return <ListItem key={item._id}  onClick={() => setMenuOpen(false)} ><Button><Link href={item.url} isMenu={true}><span>{item.label}</span></Link></Button></ListItem>
           })
           }
         </List>

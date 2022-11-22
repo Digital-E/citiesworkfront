@@ -16,7 +16,7 @@ const Container = styled.div`
   overflow: hidden;
 `
 
-const Image = styled.div`
+const Element = styled.div`
   position: absolute;
   display: flex;
   left: 50%;
@@ -27,11 +27,52 @@ const Image = styled.div`
   }
 `
 
+const Name = styled.div`
+  position: absolute;
+  top: ${props => props.y}%;
+  left: ${props => props.x}%;
+  transform: translate(-50%, -50%);
+  font-family: FluxischElse Light;
+  font-size: 1rem;
+`
+
+const Projects = styled.div`
+`
+
+const Project = styled.div`
+  position: absolute;
+  top: ${props => props.y}%;
+  left: ${props => props.x}%;
+  transform: translate(-50%, -50%);
+  font-family: FluxischElse Light;
+  font-size: 0.8rem;
+
+  display: flex;
+  align-items: center;
+
+  img {
+      width: 10px;
+      margin-right: 5px;
+  }
+
+  :hover {
+    opacity: 0.5;
+    cursor: pointer;
+  }
+`
+
 let images = [
   {
     url: "images/A.svg",
+    name: {
+      name: 'Network',
+      coords: {
+        x: 50,
+        y: 50
+      }
+    },
     initCoords: {
-      x: 0,
+      x: -100,
       y: -100,
       xDir: "-",
       yDir: "+",
@@ -43,10 +84,26 @@ let images = [
       y: 0,
       height: 0,
       width: 0,
-    }
+    },
+    projects: [
+      {
+        name: 'Project One',
+        coords: {
+          x: 30,
+          y: 45
+        }
+      }
+    ]
   },
   {
     url: "images/B.svg",
+    name: {
+      name: 'Partnerships',
+      coords: {
+        x: 50,
+        y: 50
+      }
+    },
     initCoords: {
       x: -50,
       y: -50,
@@ -64,9 +121,16 @@ let images = [
   },
   {
     url: "images/C.svg",
+    name: {
+      name: 'Research',
+      coords: {
+        x: 45,
+        y: 55
+      }
+    },
     initCoords: {
-      x: -100,
-      y: -100,
+      x: -80,
+      y: 0,
       xDir: "+",
       yDir: "+",
       height: 0,
@@ -81,6 +145,13 @@ let images = [
   },
   {
     url: "images/D.svg",
+    name: {
+      name: 'Staff Projects',
+      coords: {
+        x: 50,
+        y: 30
+      }
+    },
     initCoords: {
       x: 20,
       y: -20,
@@ -98,9 +169,16 @@ let images = [
   },
   {
     url: "images/E.svg",
+    name: {
+      name: 'MA Cities',
+      coords: {
+        x: 50,
+        y: 50
+      }
+    },
     initCoords: {
-      x: -70,
-      y: -10,
+      x: 0,
+      y: -100,
       xDir: "+",
       yDir: "-",
       height: 0,
@@ -179,7 +257,16 @@ export default function Component() {
 
   return (
     <Container ref={containerRef}>
-        {all.map(item => <Image><img src={item.url} /></Image>)}
+        {all.map((item, index) => 
+        <Element>
+          <Name x={item.name.coords.x} y={item.name.coords.y}>{item.name.name}</Name>
+          <Projects>
+            {item.projects?.map(item => 
+              <Project x={item.coords.x} y={item.coords.y}><img src={`/icons/keys/${index + 1}.svg`} />{item.name}</Project>
+            )}
+          </Projects>
+          <img src={item.url} />
+        </Element>)}
     </Container>
   )
 }

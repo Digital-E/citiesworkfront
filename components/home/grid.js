@@ -8,7 +8,7 @@ const Container = styled.div`
     width: calc(100% - 20px);
     // max-width: 1800px;
     z-index: -1;
-    top: 20px;
+    top: 10px;
     left: 10px; 
     box-sizing: border-box;
     padding: 10px;

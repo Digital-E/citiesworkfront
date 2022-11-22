@@ -11,10 +11,30 @@ import { getClient } from '../lib/sanity.server'
 import Grid from '../components/home/grid'
 import Zoom from '../components/home/zoom'
 
+import Filter from '../components/home/filter'
+import Key from '../components/home/key'
+
 const Container = styled.div`
   position: relative;
   height: 3000vh;
 `
+
+let tags = [
+  'Audio',
+  'Text',
+  'Video',
+  'Climate',
+  'Environment',
+  'London',
+]
+
+let key = [
+  'MA Cities',
+  'Staff Projects',
+  'Research',
+  'Partnerships',
+  'Network',
+]
 
 export default function Index({ data = {}, preview }) {
 
@@ -48,6 +68,8 @@ export default function Index({ data = {}, preview }) {
           />
         </Head>
         <Container>
+            <Key data={ key } />
+            <Filter data={ tags } />
             <Grid />
             <Zoom />
         </Container>

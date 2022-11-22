@@ -7,29 +7,31 @@ const Container = styled(motion.div)`
     border-radius: 999px;
     background: white;
     transition: background 0.2s;
+    line-height: 0.8;
+    width: fit-content;
+    cursor: pointer;
 
-    // :hover {
-    //     background: black;
-    //     transition: background 0.2s;
-    // }
-
-    // :hover a {
-    //     color: white;
-    //     transition: color 0.2s;
-    // }
+    > a:hover {
+        background: var(--light-gray);
+    }
 
     > a {
         position: relative;
-        top: -2px;
         display: block;
+        border-radius: 999px;
         color: black;
         font-family: Picnic Regular;
         font-size: 2rem;
         text-decoration: none;
         line-height: 0.8;
-        transition: color 0.2s;
         padding: 0.5rem 0.5rem;
         margin: 0;
+    }
+
+    > a > span {
+        position: relative;
+        font-family: Picnic Regular;
+        top: -2px;
     }
 `
 
