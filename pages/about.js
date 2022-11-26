@@ -11,6 +11,10 @@ import styled from 'styled-components'
 
 import Body from "../components/body"
 
+import Grid from "../components/home/grid"
+
+import Text from "../components/about/text"
+
 const Container = styled.div`
     display: flex;
 
@@ -73,7 +77,7 @@ export default function About({ data = {}, preview }) {
           />
         </Head>
         <Container>
-            <Col>
+            {/* <Col>
                 <div>
                     <Body content={data?.aboutData?.textcolumnone} />
                 </div>
@@ -87,7 +91,9 @@ export default function About({ data = {}, preview }) {
                 <div>
                     <Body content={data?.aboutData?.textcolumnthree} />
                 </div>
-            </Col>
+            </Col> */}
+            <Text />
+            <Grid />
         </Container>
       </Layout>
     </>

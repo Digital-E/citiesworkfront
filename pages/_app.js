@@ -13,6 +13,9 @@ import Header from '../components/header'
 import Footer from '../components/footer'
 
 
+import Ticker from '../components/ticker'
+
+
 function MyApp({ Component, pageProps, router }) {
 
   useEffect(() => {
@@ -24,6 +27,7 @@ function MyApp({ Component, pageProps, router }) {
   return (
     <>
       <Header data={pageProps.data?.menuData} />
+      <Ticker />
       {/* <CookieConsent
         buttonText={pageProps.data?.menuData.cookieaccept}
         declineButtonText={pageProps.data?.menuData.cookierefuse}
@@ -39,7 +43,7 @@ function MyApp({ Component, pageProps, router }) {
         <Body content={pageProps.data?.menuData.cookietext} />
       </CookieConsent> */}   
       <Component {...pageProps} />
-      <Footer data={pageProps.data?.footerData}/>
+      {/* <Footer data={pageProps.data?.footerData}/> */}
     </>
   )
 }

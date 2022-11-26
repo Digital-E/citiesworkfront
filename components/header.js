@@ -16,6 +16,10 @@ let Container = styled.header`
   top: 0;
   box-sizing: border-box;
 
+  > div:nth-child(1) {
+    z-index: 1;
+  }
+
   .p {
    margin: 0;
   }
@@ -57,7 +61,8 @@ let Container = styled.header`
 }
 
 @media(max-width: 989px) {
-  background: white;
+  // background: white;
+  justify-content: space-between;
   
   .nav-mobile-burger {
     display: flex;
@@ -90,9 +95,8 @@ let Menu = styled.div`
     display: none;
     position: absolute;
     flex-direction: column;
-    padding: 150px 20px 20px 20px;
-    border-bottom: 1px solid black;
-    background: white;
+    padding: 80px 30px 30px 30px;
+    // background: white;
 
     ${ListItem} {
       margin-left: 0px;
@@ -125,7 +129,7 @@ export default function Header({ data }) {
       <div
         onClick={() => {setMenuOpen(false);}}>
           <Button>
-            <Link href={`/${router.asPath.split("/")[1]}`}>
+            <Link href={`/`}>
               <span>cities.work</span>
             </Link>
           </Button>

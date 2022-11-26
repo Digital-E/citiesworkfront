@@ -21,6 +21,7 @@ const Element = styled.div`
   display: flex;
   left: 50%;
   top: 50%;
+  pointer-events: none;
 
   img {
     width: 100%;
@@ -46,6 +47,7 @@ const Project = styled.div`
   transform: translate(-50%, -50%);
   font-family: FluxischElse Light;
   font-size: 0.8rem;
+  pointer-events: all;
 
   display: flex;
   align-items: center;
@@ -92,6 +94,13 @@ let images = [
           x: 30,
           y: 45
         }
+      },
+      {
+        name: 'Project Two',
+        coords: {
+          x: 60,
+          y: 40
+        }
       }
     ]
   },
@@ -117,7 +126,23 @@ let images = [
       y: 0,
       height: 0,
       width: 0,
-    }
+    },
+    projects: [
+      {
+        name: 'Project One',
+        coords: {
+          x: 30,
+          y: 45
+        }
+      },
+      {
+        name: 'Project Two',
+        coords: {
+          x: 60,
+          y: 40
+        }
+      }
+    ]
   },
   {
     url: "images/C.svg",

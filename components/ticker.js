@@ -10,6 +10,12 @@ const Container = styled.div`
   overflow: hidden;
   border-radius: 999px;
   border: 1px solid black;
+  z-index: 1;
+  pointer-events: none;
+
+  @media(max-width: 989px) {
+    width: calc(100% - 45px);
+  }
 
   font-family: FluxischElse Light;
 
@@ -26,9 +32,9 @@ const Container = styled.div`
     animation: ticker 120s infinite linear;
   }
 
-  .ticker:hover .ticker__list {
-    animation-play-state: paused;
-  }
+  // .ticker:hover .ticker__list {
+  //   animation-play-state: paused;
+  // }
   
   .ticker__item {
     display: flex;

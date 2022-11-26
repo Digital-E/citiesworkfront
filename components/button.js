@@ -28,6 +28,10 @@ const Container = styled(motion.div)`
         margin: 0;
     }
 
+    .active-link {
+        background: var(--gray);
+    }
+
     > a > span {
         position: relative;
         font-family: Picnic Regular;
