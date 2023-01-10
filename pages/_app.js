@@ -6,6 +6,8 @@ import "../styles/flickity.css";
 
 import { useEffect } from 'react'
 
+import { StateProvider } from "../store"
+
 import Body from "../components/body"
 import CookieConsent from "react-cookie-consent"
 
@@ -25,7 +27,7 @@ function MyApp({ Component, pageProps, router }) {
   },[])
 
   return (
-    <>
+    <StateProvider>
       <Header data={pageProps.data?.menuData} />
       <Ticker />
       {/* <CookieConsent
@@ -44,7 +46,7 @@ function MyApp({ Component, pageProps, router }) {
       </CookieConsent> */}   
       <Component {...pageProps} />
       {/* <Footer data={pageProps.data?.footerData}/> */}
-    </>
+    </StateProvider>
   )
 }
 

@@ -9,14 +9,15 @@ import { homeQuery, previewHomeQuery, menuQuery, footerQuery } from '../lib/quer
 import { getClient } from '../lib/sanity.server'
 
 import Grid from '../components/home/grid'
-import Zoom from '../components/home/zoom'
+import Islands from '../components/home/islands/islands'
 
 import Filter from '../components/home/filter'
 import Key from '../components/home/key'
+import SidePanel from '../components/home/side-panel'
 
 const Container = styled.div`
   position: relative;
-  height: 3000vh;
+  height: 100vh;
 `
 
 let tags = [
@@ -57,6 +58,7 @@ export default function Index({ data = {}, preview }) {
   }, []);
 
 
+
   return (
     <>
       <Layout preview={preview}>
@@ -68,10 +70,11 @@ export default function Index({ data = {}, preview }) {
           />
         </Head>
         <Container>
-            <Key data={ key } />
+            {/* <Key data={ key } /> */}
             <Filter data={ tags } />
             <Grid />
-            <Zoom />
+            <Islands />
+            <SidePanel  />
         </Container>
       </Layout>
     </>

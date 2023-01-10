@@ -162,7 +162,7 @@ export default function Component() {
 
     // Get API Info
 
-    getAllCitiesInformation();
+    // getAllCitiesInformation();
 
   }, []);
 

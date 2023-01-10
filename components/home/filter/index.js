@@ -7,11 +7,12 @@ import Tag from './tag'
 
 const Container = styled.div`
     position: fixed;
-    bottom: 120px;
-    left: 40px;
+    top: 30px;
+    right: 40px;
     z-index: 999;
 
     > div:nth-child(1) {
+        margin-left: auto;
         margin-bottom: 0.5rem;
     }
 `
