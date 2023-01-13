@@ -40,7 +40,7 @@ export default ({ data }) => {
     return (
         <>
         <Grid>
-            <img src="/images/grid.svg"/>
+            <img src="/images/grid2.svg"/>
         </Grid>
         <Container>
         </Container>

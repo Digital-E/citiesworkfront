@@ -12,7 +12,7 @@ const Container = styled(motion.div)`
     cursor: pointer;
 
     > a:hover {
-        background: var(--light-gray);
+        background: var(--light-gray) !important;
     }
 
     > a {
@@ -42,7 +42,9 @@ const Container = styled(motion.div)`
 
 export default function Component ({ children }) {
     return (
-        <Container whileHover={{scale: 1.05}}>
+        <Container 
+        // whileHover={{scale: 1.05}}
+        >
             {children}
         </Container>
     )

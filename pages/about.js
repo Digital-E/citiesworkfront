@@ -17,6 +17,7 @@ import Text from "../components/about/text"
 
 const Container = styled.div`
     display: flex;
+    height: 100vh;
 
     @media(max-width: 989px) {
         flex-direction: column;
@@ -56,6 +57,15 @@ const Col = styled.div`
     }
 `
 
+const TextPlaceholder = styled.div`
+    position: absolute;
+    width: 50%;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+`
+
+
 export default function About({ data = {}, preview }) {
 
   const router = useRouter()
@@ -92,7 +102,10 @@ export default function About({ data = {}, preview }) {
                     <Body content={data?.aboutData?.textcolumnthree} />
                 </div>
             </Col> */}
-            <Text />
+            {/* <Text /> */}
+            <TextPlaceholder>
+              <img src='images/text-placeholder.svg' />
+            </TextPlaceholder>
             <Grid />
         </Container>
       </Layout>

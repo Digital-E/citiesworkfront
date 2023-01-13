@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { motion } from 'framer-motion'
 
 import styled from 'styled-components'
 
@@ -14,17 +15,36 @@ const Container = styled.div`
     > div:nth-child(1) {
         margin-left: auto;
         margin-bottom: 0.5rem;
+        width: fit-content;
+    }
+
+    > div:nth-child(1).filter-open > div {
+        background: var(--gray);
     }
 `
 
-const Tags = styled.div`
+const Tags = styled(motion.div)`
     display: flex;
     flex-wrap: wrap;
 `
 
+let variants = {
+    'open': {
+        opacity: 1,
+        transition: {
+            staggerChildren: 0.05,
+            staggerDirection: -1
+        }
+    },
+    'closed': {
+        opacity: 0,
+    }
+}
+
 
 
 export default function Component({ data }) {
+    let [filterOpen, setFilterOpen] = useState(false);
     let [tags, setTags] = useState([]);
     let [showClear, setShowClear] = useState(false);
 
@@ -72,11 +92,21 @@ export default function Component({ data }) {
 
         setTags(tagsObj)
     }
+
     
     return (
         <Container>
-            <Button><a><span>Filter</span></a></Button>
-            <Tags>
+            <div 
+            className={filterOpen ? 'filter-open' : ''}
+            onClick={() => setFilterOpen(!filterOpen)}
+            >
+                <Button><a><span>Filter</span></a></Button>
+            </div>
+            <Tags
+                init='closed'
+                animate={filterOpen ? 'open' : 'closed'}
+                variants={variants}
+            >
                 {tags.map((item, index) => <Tag data={item} index={index} selectTag={(i) => toggleTag(i)}/>)}
                 <Tag data={tags} isClear={true} clearAll={() => clearAll()} showClear={showClear}>× Clear </Tag>
             </Tags>

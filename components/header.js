@@ -20,6 +20,10 @@ let Container = styled.header`
     z-index: 1;
   }
 
+  > div:nth-child(1) .active-link {
+    background: none;
+  }
+
   .p {
    margin: 0;
   }
