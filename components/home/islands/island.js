@@ -27,10 +27,10 @@ const Element = styled(motion.div)`
   }
 
   &.open-island {
-    width: 70vw !important;
+    // width: 70vw !important;
     left: 50% !important;
     top: 50% !important;
-    transform: translate(-50%, -50%)!important;
+    transform: translate(-50%, -50%) scale(1.7) !important;
     z-index: 2 !important;
     transition: 1s;
   }
