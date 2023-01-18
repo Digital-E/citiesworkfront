@@ -35,6 +35,14 @@ const Element = styled(motion.div)`
     transition: 1s;
   }
 
+  .island-text {
+    transition: 0.5s;
+  }
+
+  &.open-island .island-text {
+    transform: translate(-50%,-50%) scale(0.7);
+  }
+
 
   img {
     width: 100%;
@@ -158,13 +166,14 @@ export default function Component({ data, index, dataAll, toggle, prevOpen }) {
             variants={variants}
             >
             <div>
-                <Name x={data.name.coords.x} y={data.name.coords.y}>{data.name.name}</Name>
+                <Name x={data.name.coords.x} y={data.name.coords.y} className='island-text'>{data.name.name}</Name>
                 <Projects>
                     {data.projects?.map(item => 
                     <Project 
                         x={item.coords.x} 
                         y={item.coords.y}
                         onClick={() => toggleSidepanel()}
+                        className='island-text'
                         >
                             <img src={`/icons/keys/${index + 1}.svg`} />
                             {item.name}
