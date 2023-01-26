@@ -20,22 +20,22 @@ const Container = styled.div`
   height: 100vh;
 `
 
-let tags = [
-  'Audio',
-  'Text',
-  'Video',
-  'Climate',
-  'Environment',
-  'London',
-]
+// let tags = [
+//   'Audio',
+//   'Text',
+//   'Video',
+//   'Climate',
+//   'Environment',
+//   'London',
+// ]
 
-let key = [
-  'MA Cities',
-  'Staff Projects',
-  'Research',
-  'Partnerships',
-  'Network',
-]
+// let key = [
+//   'MA Cities',
+//   'Staff Projects',
+//   'Research',
+//   'Partnerships',
+//   'Network',
+// ]
 
 export default function Index({ data = {}, preview }) {
 
@@ -57,8 +57,6 @@ export default function Index({ data = {}, preview }) {
 
   }, []);
 
-
-
   return (
     <>
       <Layout preview={preview}>
@@ -71,9 +69,9 @@ export default function Index({ data = {}, preview }) {
         </Head>
         <Container>
             {/* <Key data={ key } /> */}
-            <Filter data={ tags } />
+            <Filter data={ data?.homeData?.filters } />
             <Grid />
-            <Islands />
+            <Islands data={data?.homeData} />
             <SidePanel  />
         </Container>
       </Layout>

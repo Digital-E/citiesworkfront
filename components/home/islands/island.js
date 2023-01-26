@@ -13,10 +13,10 @@ import { store } from "../../../store";
 const Element = styled(motion.div)`
   position: absolute;
   display: flex;
-  left: ${props => props.data.initCoords.x }% !important;
-  top: ${props => props.data.initCoords.y }% !important;
+  left: ${props => props.data.islandPositionX }% !important;
+  top: ${props => props.data.islandPositionY }% !important;
   width: 30%;
-  pointer-events: all;
+  pointer-events: none;
   z-index: auto;
 
   transition: 0.1s;
@@ -39,10 +39,20 @@ const Element = styled(motion.div)`
     transition: 0.5s;
   }
 
+  .island-svg {
+    position: relative;
+    z-index: -1;
+  }
+
+  .island-svg path {
+    pointer-events: all;
+    cursor: pointer;
+    fill: ${props => props.data.color };
+  }
+
   &.open-island .island-text {
     transform: translate(-50%,-50%) scale(0.7);
   }
-
 
   img {
     width: 100%;
@@ -52,8 +62,8 @@ const Element = styled(motion.div)`
     transition: transform 0.7s;
   }
 
-  :hover > div {
-    transform: scale(1.1);
+  &.hover-island > div {
+    transform: scale(1.1) !important
   }
 `
 
@@ -118,14 +128,17 @@ export default function Component({ data, index, dataAll, toggle, prevOpen }) {
     const { state, dispatch } = context;
 
     let elRef = useRef();
+    let islandSVGRef = useRef();
     let [isOpen, setIsOpen] = useState(false);
 
     let mouseEnter = () => {
         elRef.current.style.zIndex = 2;
+        elRef.current.classList.add("hover-island")
     }
 
     let mouseLeave = () => {
         elRef.current.style.zIndex = 'auto';
+        elRef.current.classList.remove("hover-island")
     }
 
     useEffect(() => {
@@ -146,8 +159,15 @@ export default function Component({ data, index, dataAll, toggle, prevOpen }) {
             }, 1000)
         }
 
-
     }, [dataAll])
+
+    useEffect(() => {
+      Array.from(islandSVGRef.current.children[0].children).forEach(item => {
+        item.addEventListener("mouseenter", mouseEnter)
+        item.addEventListener("mouseleave", mouseLeave)
+        item.addEventListener("click", toggle)
+      })
+    }, [])
 
     const toggleSidepanel = () => {
         dispatch({type: "sidepanel open", value: true})
@@ -157,30 +177,31 @@ export default function Component({ data, index, dataAll, toggle, prevOpen }) {
         <Element 
             ref={elRef} 
             data={data} 
-            onMouseEnter={() => mouseEnter()} 
-            onMouseLeave={() => mouseLeave()} 
-            onClick={() => toggle()} 
             data-depth={data.dataDepth}
-            // className={isOpen ? "open-island" : ""}
-            // animate={isOpen ? "open" : "close"} 
             variants={variants}
             >
             <div>
-                <Name x={data.name.coords.x} y={data.name.coords.y} className='island-text'>{data.name.name}</Name>
+                <Name x={data.titlePositionX} y={data.titlePositionY} className='island-text'>{data.title}</Name>
                 <Projects>
                     {data.projects?.map(item => 
                     <Project 
-                        x={item.coords.x} 
-                        y={item.coords.y}
+                        x={item.titlePositionX} 
+                        y={item.titlePositionY}
+                        onMouseOver={() => mouseEnter()}
+                        onMouseLeave={() => mouseLeave()}
                         onClick={() => toggleSidepanel()}
                         className='island-text'
                         >
                             <img src={`/icons/keys/${index + 1}.svg`} />
-                            {item.name}
+                            {item.title}
                     </Project>
                     )}
                 </Projects>
-                <img src={data.url} />
+                <div                
+                  ref={islandSVGRef}
+                  className='island-svg'
+                  dangerouslySetInnerHTML={{__html: data.svg}}
+                />
           </div>
         </Element>
   )
