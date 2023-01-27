@@ -10,7 +10,8 @@ const Container = styled.div`
     position: fixed;
     top: 30px;
     right: 40px;
-    z-index: 999;
+    z-index: 2;
+    transition: 0.7s;
 
     > div:nth-child(1) {
         margin-left: auto;
@@ -20,6 +21,10 @@ const Container = styled.div`
 
     > div:nth-child(1).filter-open > div {
         background: var(--gray);
+    }
+
+    &.hide-filter {
+        transform: translateY(-150px);
     }
 `
 
@@ -96,7 +101,7 @@ export default function Component({ data }) {
 
     
     return (
-        <Container>
+        <Container className="filter">
             <div 
             className={filterOpen ? 'filter-open' : ''}
             onClick={() => setFilterOpen(!filterOpen)}

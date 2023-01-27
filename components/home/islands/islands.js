@@ -17,6 +17,7 @@ const Container = styled.div`
   left: 0;
   top: 0;
   overflow: hidden;
+  z-index: 1;
 `
 
 let Overlay = styled(motion.div)`
@@ -218,17 +219,14 @@ var parallaxInstance = null;
 
 let parallaxTimeout = null;
 
-export default function Component({ data }) {
+export default function Component({ data, allProjects }) {
   let [all, setAll] = useState([]);
   let [prevOpen, setPrevOpen] = useState(0);
   let [overlayOpen, setOverlayOpen] = useState(false);
   let containerRef = useRef();
-  let initWidth = 600;
 
 
   useEffect(() => {
-
-    console.log(data.islands)
     
     setAll(data.islands)
 
@@ -291,7 +289,9 @@ export default function Component({ data }) {
 
   return (
     <Container ref={containerRef} id="scene">
-        {all.map((item, index) => <Island data={item} dataAll={all} index={index} toggle={() => toggleIsland(index)} prevOpen={prevOpen}/> )}
+        {all.map((item, index) => 
+        <Island data={item} dataAll={all} index={index} toggle={() => toggleIsland(index)} prevOpen={prevOpen} allProjects={allProjects} />
+        )}
         <Overlay animate={overlayOpen ? "visible" : "hidden"} variants={overlayVariants} onClick={() => closeAll()}/>
     </Container>
   )

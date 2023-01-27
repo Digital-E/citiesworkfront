@@ -1,19 +1,15 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useContext } from 'react'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 import ErrorPage from 'next/error'
 import styled from 'styled-components'
 import Layout from '../components/layout'
 import { SITE_NAME } from '../lib/constants'
-import { homeQuery, previewHomeQuery, menuQuery, footerQuery } from '../lib/queries'
+import { homeQuery, previewHomeQuery, allProjectsQuery, previewAllProjectsQuery, menuQuery, footerQuery } from '../lib/queries'
 import { getClient } from '../lib/sanity.server'
 
-import Grid from '../components/home/grid'
-import Islands from '../components/home/islands/islands'
+import { store } from "../store"
 
-import Filter from '../components/home/filter'
-import Key from '../components/home/key'
-import SidePanel from '../components/home/side-panel'
 
 const Container = styled.div`
   position: relative;
@@ -39,6 +35,10 @@ const Container = styled.div`
 
 export default function Index({ data = {}, preview }) {
 
+  //Context
+  const context = useContext(store);
+  const { state, dispatch } = context;
+
   const router = useRouter()
 
   const slug = data?.homeData?.slug
@@ -48,7 +48,6 @@ export default function Index({ data = {}, preview }) {
   }
 
   useEffect(() => {
-
     // document.querySelector("body").classList.add("body-lock");
 
     // return () => {
@@ -68,11 +67,6 @@ export default function Index({ data = {}, preview }) {
           />
         </Head>
         <Container>
-            {/* <Key data={ key } /> */}
-            <Filter data={ data?.homeData?.filters } />
-            <Grid />
-            <Islands data={data?.homeData} />
-            <SidePanel  />
         </Container>
       </Layout>
     </>
@@ -83,10 +77,12 @@ export async function getStaticProps({ preview = false, params }) {
 
   let homeData = await getClient(preview).fetch(homeQuery)
 
+  let allProjectsData = await getClient(preview).fetch(allProjectsQuery)
+
   if(preview) {
-    homeData = await getClient(preview).fetch(previewHomeQuery, {
-      slug: slug,
-    }) 
+    homeData = await getClient(preview).fetch(previewHomeQuery) 
+
+    allProjectsData = await getClient(preview).fetch(previewAllProjectsQuery)
   }
 
 
@@ -103,6 +99,7 @@ export async function getStaticProps({ preview = false, params }) {
       preview,
       data: {
         homeData,
+        allProjectsData,
         menuData,
         // footerData
       }

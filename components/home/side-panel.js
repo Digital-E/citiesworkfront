@@ -1,10 +1,16 @@
 import { useEffect, useRef, useState, useContext } from 'react';
+import { useRouter } from 'next/router';
 
 import styled from "styled-components"
 
 import { store } from '../../store'
 
 import { motion } from 'framer-motion'
+
+import Slices from '../../components/slices'
+
+
+
 
 const Container = styled(motion.div)`
     position: fixed;
@@ -22,6 +28,7 @@ const CloseButton = styled.div`
     font-family: "Picnic Regular";
     cursor: pointer;
     transition: 0.2s;
+    z-index: 999;
 
     :hover {
         transform: scale(1.1);
@@ -44,6 +51,11 @@ let Overlay = styled(motion.div)`
   pointer-events: all;
 `
 
+const Title = styled.h1`
+    margin-bottom: 30px;
+`
+
+
 let ContainerInner = styled.div`
     height: 100%;
     overflow: scroll;
@@ -54,15 +66,6 @@ let ContainerInner = styled.div`
 
     > div > h1 {
         padding-right: 50px;
-    }
-`
-
-let Image = styled.div`
-
-    margin: 30px 0;
-
-    img {
-        width: 100%;
     }
 `
 
@@ -98,43 +101,39 @@ let overlayVariants = {
   }
 
 
-export default ({ data, toggleDrawer }) => {
+export default ({ preview, data }) => {
     //Context
     const context = useContext(store);
-    const { state, dispatch } = context; 
+    const { state, dispatch } = context;
+
+    let router = useRouter();
 
     let containerRef = useRef();
 
     let [reveal, setReveal] = useState(false);
 
-    useEffect(() => {
-        if(state.sidepanelOpen) {
-            setReveal(true)
 
-        } else {
-            setReveal(false)    
-        }
-    }, [state])
+    useEffect(() => {
+        setReveal(true)
+    }, [])
 
     let hasClicked = () => {
-        dispatch({type: "sidepanel open", value: false})
+        setReveal(false)
+
+        setTimeout(() => {
+            router.push("/")
+        }, 250)
     }
 
 
     return (
         <>
             <Container ref={containerRef} initial="closed" animate={reveal ? "open" : "closed"} variants={variants}>
-                <CloseButton onClick={() => hasClicked()}><img src="icons/close.svg" /></CloseButton>
+                <CloseButton onClick={() => hasClicked()}><img src="/icons/close.svg" /></CloseButton>
                 <ContainerInner>
                     <div>
-                        <h1>Project Title Lorem Ipsum</h1>
-                        <Image>
-                            <img src="images/udden.jpeg" />
-                        </Image>
-                        <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>
-                        <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>
-                        <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>
-                        <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>
+                        <Title>{ data?.title }</Title>
+                        <Slices data={ data?.slices } />
                     </div>
                 </ContainerInner>
             </Container>

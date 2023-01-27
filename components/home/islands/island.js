@@ -1,12 +1,15 @@
 import { useEffect, useState, useRef, useContext } from 'react'
 import styled from 'styled-components'
 
+import { useRouter } from 'next/router'
+
 import { gsap } from "gsap/dist/gsap";
 
 import { motion } from "framer-motion";
 
 import { store } from "../../../store";
 
+import splitSlug from "../../../lib/splitSlug"
 
 
 
@@ -122,10 +125,12 @@ let variants = {
 
 let closingIslandTimeout = null;
 
-export default function Component({ data, index, dataAll, toggle, prevOpen }) {
+export default function Component({ data, index, dataAll, allProjects, toggle, prevOpen }) {
     //Context
     const context = useContext(store);
     const { state, dispatch } = context;
+
+    let router = useRouter();
 
     let elRef = useRef();
     let islandSVGRef = useRef();
@@ -169,8 +174,14 @@ export default function Component({ data, index, dataAll, toggle, prevOpen }) {
       })
     }, [])
 
-    const toggleSidepanel = () => {
-        dispatch({type: "sidepanel open", value: true})
+    const toggleSidepanel = (reference) => {
+      
+      let match = allProjects.filter(item => item._id === reference)
+
+      let pathname = `/${splitSlug(match[0].slug, 0)}/${splitSlug(match[0].slug, 1)}`
+      router.push(pathname)
+        // dispatch({type: "sidepanel open", value: true})
+        // dispatch({type: "current project reference", value: reference})
       }
 
   return (
@@ -189,7 +200,7 @@ export default function Component({ data, index, dataAll, toggle, prevOpen }) {
                         y={item.titlePositionY}
                         onMouseOver={() => mouseEnter()}
                         onMouseLeave={() => mouseLeave()}
-                        onClick={() => toggleSidepanel()}
+                        onClick={() => toggleSidepanel(item.project._ref)}
                         className='island-text'
                         >
                             <img src={`/icons/keys/${index + 1}.svg`} />

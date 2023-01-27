@@ -4,7 +4,7 @@ import { useRouter } from 'next/router'
 import ErrorPage from 'next/error'
 import Layout from '../components/layout'
 import { SITE_NAME } from '../lib/constants'
-import { aboutQuery, previewAboutQuery, menuQuery, footerQuery } from '../lib/queries'
+import { homeQuery, previewHomeQuery, aboutQuery, previewAboutQuery, menuQuery, footerQuery } from '../lib/queries'
 import { getClient } from '../lib/sanity.server'
 
 import styled from 'styled-components'
@@ -16,44 +16,14 @@ import Grid from "../components/home/grid"
 import Text from "../components/about/text"
 
 const Container = styled.div`
+    position: relative;
     display: flex;
     height: 100vh;
+    z-index: 1;
+    background: white;
 
     @media(max-width: 989px) {
         flex-direction: column;
-    }
-`
-
-const Col = styled.div`
-    padding: 20px;
-
-    :nth-child(1) {
-        flex-basis: 35%;
-        padding-left: 0;
-    }
-
-    :nth-child(2) {
-        flex-basis: 35%;
-        padding-left: 0;
-    }
-
-    > div {
-        width: 80%;
-    }
-
-    :nth-child(3) {
-        flex-basis: 30%;
-    }
-
-    @media(max-width: 989px) {
-        > div {
-            width: 100%;
-        }
-
-        :nth-child(3) {
-            margin-left: 0;
-            padding-left: 0;
-        }
     }
 `
 
@@ -76,6 +46,14 @@ export default function About({ data = {}, preview }) {
     return <ErrorPage statusCode={404} />
   }
 
+  useEffect(() => {
+    document.querySelector(".filter").classList.add("hide-filter")
+
+    return () => {
+      document.querySelector(".filter").classList.remove("hide-filter")
+    }
+  }, []);
+
   return (
     <>
       <Layout preview={preview}>
@@ -87,22 +65,6 @@ export default function About({ data = {}, preview }) {
           />
         </Head>
         <Container>
-            {/* <Col>
-                <div>
-                    <Body content={data?.aboutData?.textcolumnone} />
-                </div>
-            </Col>
-            <Col>
-                <div>
-                    <Body content={data?.aboutData?.textcolumntwo} />
-                </div>
-            </Col>
-            <Col>
-                <div>
-                    <Body content={data?.aboutData?.textcolumnthree} />
-                </div>
-            </Col> */}
-            {/* <Text /> */}
             <TextPlaceholder>
               <img src='images/text-placeholder.svg' />
             </TextPlaceholder>
@@ -117,11 +79,15 @@ export async function getStaticProps({ preview = false, params }) {
 
   let slug = `about`
 
+  let homeData = await getClient(preview).fetch(homeQuery)
+
   let aboutData = await getClient(preview).fetch(aboutQuery, {
     slug: slug,
   })
 
   if(preview) {
+    homeData = await getClient(preview).fetch(previewHomeQuery) 
+
     aboutData = await getClient(preview).fetch(previewAboutQuery, {
       slug: slug,
     })
@@ -137,6 +103,7 @@ export async function getStaticProps({ preview = false, params }) {
     props: {
       preview,
       data: {
+        homeData,
         aboutData,
         menuData,
         footerData

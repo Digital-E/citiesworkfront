@@ -1,7 +1,9 @@
 import React, { useReducer, createContext } from "react";
 
 const initialState = {
-  sidePanelOpen: false
+  sidePanelOpen: false,
+  currentProjectReference: '',
+  savePath: ''
 };
 
 const store = createContext(initialState);
@@ -15,7 +17,17 @@ const StateProvider = ({ children }) => {
         return {
           ...newState,
           sidepanelOpen: action.value
-        };                        
+        }; 
+      case "current project reference":
+        return {
+          ...newState,
+          currentProjectReference: action.value
+        };
+      case "save path":
+        return {
+          ...newState,
+          savePath: action.value
+        };                    
       default:
         throw new Error();
     }
