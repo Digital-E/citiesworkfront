@@ -27,13 +27,35 @@ const Container = styled.div`
     }
 `
 
-const TextPlaceholder = styled.div`
-    position: absolute;
-    width: 50%;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
-`
+const Columns = styled.div`
+    position: relative;
+    z-index: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+
+    > div:nth-child(1) {
+      flex-basis: 25%;
+    }
+
+    > div:nth-child(2) {
+      display: flex;
+      justify-content: space-between;
+      flex-basis: 75%;
+    }
+
+    > div:nth-child(2) > div:nth-child(1) {
+      margin-left: 10%;
+      text-align: center;
+    }
+
+    > div > div > *:nth-child(1) {
+      margin-top: 0 !important;
+    }
+
+    padding-right: 80px;
+`;
 
 
 export default function About({ data = {}, preview }) {
@@ -65,10 +87,18 @@ export default function About({ data = {}, preview }) {
           />
         </Head>
         <Container>
-            <TextPlaceholder>
-              <img src='images/text-placeholder.svg' />
-            </TextPlaceholder>
             <Grid />
+            <Columns>
+              <div></div>
+              <div>
+                <div>
+                  <Body content={data?.aboutData?.textcolumnone} />
+                </div>
+                <div>
+                  <Body content={data?.aboutData?.textcolumntwo} />
+                </div>
+              </div>
+            </Columns>
         </Container>
       </Layout>
     </>

@@ -38,12 +38,12 @@ export default ({ data }) => {
 
 
     return (
-        <>
-        <Grid>
-            <img src="/images/grid2.svg"/>
-        </Grid>
-        <Container>
-        </Container>
-        </>
+        <div>
+            <Grid>
+                <img src="/images/grid2.svg"/>
+            </Grid>
+            <Container>
+            </Container>
+        </div>
     )
 }

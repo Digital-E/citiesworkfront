@@ -236,6 +236,7 @@ h5, .h5 {
 }
 
 h6, .h6 {
+    /* font-family: "Picnic Regular"; */
     font-family: "Picnic Regular";
     /* font-size: 1.3rem; */
     font-size: 1rem;

@@ -18,7 +18,7 @@ const Element = styled(motion.div)`
   display: flex;
   left: ${props => props.data.islandPositionX }% !important;
   top: ${props => props.data.islandPositionY }% !important;
-  width: 30%;
+  width: 40%;
   pointer-events: none;
   z-index: auto;
 
@@ -50,7 +50,7 @@ const Element = styled(motion.div)`
   .island-svg path {
     pointer-events: all;
     cursor: pointer;
-    fill: ${props => props.data.color };
+    // fill: ${props => props.data.color };
   }
 
   &.open-island .island-text {
@@ -116,7 +116,7 @@ let variants = {
       transition: "1s"
     },
     "close": {
-      width: "30%",
+      width: "40%",
       transitionEnd: {
         transition: "0s",
       },
