@@ -45,6 +45,7 @@ const Element = styled(motion.div)`
   .island-svg {
     position: relative;
     z-index: -1;
+    pointer-events: all;
   }
 
   .island-svg path {
@@ -137,6 +138,7 @@ export default function Component({ data, index, dataAll, allProjects, toggle, p
     let [isOpen, setIsOpen] = useState(false);
 
     let mouseEnter = () => {
+      console.log("hello")
         elRef.current.style.zIndex = 2;
         elRef.current.classList.add("hover-island")
     }
