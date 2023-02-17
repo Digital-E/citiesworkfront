@@ -12,11 +12,13 @@ const Container = styled.div`
     right: 40px;
     z-index: 2;
     transition: 0.7s;
+    pointer-events: none;
 
     > div:nth-child(1) {
         margin-left: auto;
         margin-bottom: 0.5rem;
         width: fit-content;
+        pointer-events: all;
     }
 
     > div:nth-child(1).filter-open > div {
@@ -26,11 +28,52 @@ const Container = styled.div`
     &.hide-filter {
         transform: translateY(-150px);
     }
+
+    @media(max-width: 989px) {
+        display: flex;
+        flex-direction: column;
+        position: fixed;
+        bottom: 80px;
+        top: auto;
+        right: auto;
+
+        > div:nth-child(1) {
+            margin: 0;
+            width: fit-content;
+        }
+
+        > div:nth-child(1) {
+            left: 140px;
+            position: relative;
+        }
+
+        &.hide-filter {
+            transform: translateY(0px);
+            filter: blur(10px);
+        }
+
+        &.hide-filter > div {
+            pointer-events: none !important;
+        }
+    }
 `
 
 const Tags = styled(motion.div)`
     display: flex;
     flex-wrap: wrap;
+
+    > div {
+        pointer-events: all;
+    }
+
+    @media(max-width: 989px) {
+        order: -1;
+        padding: 0 30px;
+
+        > div {
+            margin: 0.3rem;
+        }
+    }
 `
 
 let variants = {

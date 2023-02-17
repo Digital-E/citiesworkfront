@@ -14,7 +14,8 @@ const Container = styled.div`
   pointer-events: none;
 
   @media(max-width: 989px) {
-    width: calc(100% - 45px);
+    width: calc(100% - 60px);
+    bottom: 30px;
   }
 
   font-family: FluxischElse Light;
@@ -162,7 +163,7 @@ export default function Component() {
 
     // Get API Info
 
-    getAllCitiesInformation();
+    // getAllCitiesInformation();
 
   }, []);
 
@@ -180,8 +181,20 @@ export default function Component() {
     <Container ref={containerRef}>
       <div className='ticker'>
         <div className='ticker__list'>
-          {all.map(item => 
+          <div className='ticker__item'>
+          <div className='ticker__item-element'>City Information City Information</div>
+          <div className='ticker__item-element'>City Information City Information</div>
+          <div className='ticker__item-element'>City Information City Information</div>
+          <div className='ticker__item-element'>City Information City Information</div>
+          <div className='ticker__item-element'>City Information City Information</div>
+          <div className='ticker__item-element'>City Information City Information</div>
+          <div className='ticker__item-element'>City Information City Information</div>
+          <div className='ticker__item-element'>City Information City Information</div>
+          <div className='ticker__item-dot'></div>
+          </div>
+          {/* {all.map(item => 
             <div className='ticker__item'>
+              <div className='ticker__item-element'>{item.population.name}, {item.stats.name} - Population: {item.population.population.toLocaleString()} - {item.weather.temp}°C - Currency: {item.stats.currency.code}</div>
               <div className='ticker__item-element'>{item.population.name}, {item.stats.name}</div>
               <div className='ticker__item-element'>Population: {item.population.population.toLocaleString()}</div>
               <div className='ticker__item-element'>{item.weather.temp}°C</div>
@@ -192,7 +205,7 @@ export default function Component() {
               <div className='ticker__item-element'>Forested area: {item.stats.forested_area}</div>
               <div className='ticker__item-dot'></div>
             </div>
-            )}
+            )} */}
         </div>
       </div>
     </Container>

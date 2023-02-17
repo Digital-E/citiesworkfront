@@ -29,13 +29,15 @@ const Element = styled(motion.div)`
     z-index: 2 !important;
   }
 
-  &.open-island {
-    // width: 70vw !important;
-    left: 50% !important;
-    top: 50% !important;
-    transform: translate(-50%, -50%) scale(1.7) !important;
-    z-index: 2 !important;
-    transition: 1s;
+  @media(min-width: 990px) {
+    &.open-island {
+      // width: 70vw !important;
+      left: 50% !important;
+      top: 50% !important;
+      transform: translate(-50%, -50%) scale(1.7) !important;
+      z-index: 2 !important;
+      transition: 1s;
+    }
   }
 
   .island-text {
@@ -45,10 +47,10 @@ const Element = styled(motion.div)`
   .island-svg {
     position: relative;
     z-index: -1;
-    pointer-events: all;
+    // pointer-events: all;
   }
 
-  .island-svg path {
+  .island-svg path, .island-svg image {
     pointer-events: all;
     cursor: pointer;
     // fill: ${props => props.data.color };
@@ -68,6 +70,16 @@ const Element = styled(motion.div)`
 
   &.hover-island > div {
     transform: scale(1.1) !important
+  }
+
+  @media(max-width: 989px) {
+    top: ${props => parseInt(props.data.islandPositionY) + 10 }% !important;
+
+
+    > div > div:nth-child(2)
+     {
+      display: none;
+    }
   }
 `
 
@@ -138,7 +150,6 @@ export default function Component({ data, index, dataAll, allProjects, toggle, p
     let [isOpen, setIsOpen] = useState(false);
 
     let mouseEnter = () => {
-      console.log("hello")
         elRef.current.style.zIndex = 2;
         elRef.current.classList.add("hover-island")
     }
@@ -176,15 +187,13 @@ export default function Component({ data, index, dataAll, allProjects, toggle, p
       })
     }, [])
 
-    const toggleSidepanel = (reference) => {
-      
+    const route = (reference) => {
+
       let match = allProjects.filter(item => item._id === reference)
 
       let pathname = `/${splitSlug(match[0].slug, 0)}/${splitSlug(match[0].slug, 1)}`
       router.push(pathname)
-        // dispatch({type: "sidepanel open", value: true})
-        // dispatch({type: "current project reference", value: reference})
-      }
+    }
 
   return (
         <Element 
@@ -202,7 +211,7 @@ export default function Component({ data, index, dataAll, allProjects, toggle, p
                         y={item.titlePositionY}
                         onMouseOver={() => mouseEnter()}
                         onMouseLeave={() => mouseLeave()}
-                        onClick={() => toggleSidepanel(item.project._ref)}
+                        onClick={() => route(item.project._ref)}
                         className='island-text'
                         >
                             <img src={`/icons/keys/${index + 1}.svg`} />

@@ -248,7 +248,7 @@ h6, .h6 {
 
 
 p, .p, a {
-    font-family: "FluxischElse Regular";
+    font-family: "FluxischElse Light";
     /* font-size: 1.3rem; */
     font-size: 1rem;
     letter-spacing: 0.02em;
@@ -278,7 +278,7 @@ time {
     margin-top: 0.5rem;
 }
 
-@media(max-width: 768px) {
+@media(max-width: 989px) {
     h1, .h1 {
         font-family: "Picnic Regular";
         font-size: 2.5rem;
@@ -334,7 +334,7 @@ time {
     }
     
     p, .p {
-        font-family: "FluxischElse Regular";
+        font-family: "FluxischElse Light";
         font-size: 1rem;
         /* letter-spacing: -0.02em; */
         font-weight: 100;

@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState, useContext } from 'react';
 import { useRouter } from 'next/router';
+import { useMediaQuery } from 'react-responsive';
 
 import styled from "styled-components"
 
@@ -15,10 +16,14 @@ import Slices from '../../components/slices'
 const Container = styled(motion.div)`
     position: fixed;
     height: 100%;
-    width: 45%;
+    width: 60%;
     right: 0;
     z-index: 999;
     background: white;
+
+    @media(max-width: 989px) {
+        width: 100%;
+    }
 `
 
 const CloseButton = styled.div`
@@ -106,6 +111,10 @@ export default ({ preview, data }) => {
     const context = useContext(store);
     const { state, dispatch } = context;
 
+    const isDesktop = useMediaQuery({
+        query: '(min-width: 990px)'
+    })
+
     let router = useRouter();
 
     let containerRef = useRef();
@@ -123,6 +132,21 @@ export default ({ preview, data }) => {
         setTimeout(() => {
             router.push("/")
         }, 250)
+    }
+
+    let variants = {
+        open: {
+            right: 0,
+            transition: {
+                duration: 0.5
+            }
+        },
+        closed: {
+            right: isDesktop ? "-60%" : "-100%",
+            transition: {
+                duration: 0.5
+            }
+        }
     }
 
 

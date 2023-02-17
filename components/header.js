@@ -15,9 +15,15 @@ let Container = styled.header`
   z-index: 2;
   top: 0;
   box-sizing: border-box;
+  pointer-events: none;
 
   > div:nth-child(1) {
     z-index: 1;
+    pointer-events: all;
+  }
+
+  > div:nth-child(2) > ul {
+    pointer-events: all;
   }
 
   > div:nth-child(1) .active-link {
@@ -78,6 +84,11 @@ let Container = styled.header`
 let List = styled.ul`
   display: flex;
   flex-direction: column;
+
+  @media(max-width: 989px) {
+    position: fixed;
+    bottom: 70px;
+  }
 `
 
 let ListItem = styled.li`
@@ -96,11 +107,11 @@ let Menu = styled.div`
   }
 
   @media(max-width: 989px) {
-    display: none;
+    // display: none;
     position: absolute;
     flex-direction: column;
     padding: 80px 30px 30px 30px;
-    // background: white;
+    bottom: 0;
 
     ${ListItem} {
       margin-left: 0px;
@@ -138,11 +149,11 @@ export default function Header({ data }) {
             </Link>
           </Button>
       </div>
-      <div class="nav-mobile-burger" onClick={() => setMenuOpen(!menuOpen)}>
+      {/* <div class="nav-mobile-burger" onClick={() => setMenuOpen(!menuOpen)}>
         <div></div>
         <div></div>
         <div></div>
-      </div>
+      </div> */}
       <Menu className={menuOpen ? "nav--open" : ""}>
         <List>
           {
