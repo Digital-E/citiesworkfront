@@ -4,7 +4,7 @@ import '../styles/index.css'
 
 import "../styles/flickity.css";
 
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 
 import { StateProvider } from "../store"
 
@@ -24,6 +24,8 @@ import Ticker from '../components/ticker'
 
 function MyApp({ Component, pageProps, router }) {
 
+  let [activeTags, setActiveTags] = useState([]);
+
   useEffect(() => {
     setTimeout(() => {
       document.querySelector("#__next").style.opacity = 1
@@ -34,9 +36,9 @@ function MyApp({ Component, pageProps, router }) {
     <StateProvider>
       <Header data={pageProps.data?.menuData} />
       <Ticker />
-      <Filter data={ pageProps.data?.homeData?.filters } />
+      <Filter data={ pageProps.data?.homeData?.filters } setActiveTags={(data) => setActiveTags(data)}/>
       <Grid />
-      <Islands data={pageProps.data?.homeData} allProjects={pageProps.data?.allProjectsData}/>
+      <Islands data={pageProps.data?.homeData} allProjects={pageProps.data?.allProjectsData} activeTags={activeTags}/>
       {/* <CookieConsent
         buttonText={pageProps.data?.menuData.cookieaccept}
         declineButtonText={pageProps.data?.menuData.cookierefuse}

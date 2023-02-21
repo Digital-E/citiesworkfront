@@ -72,7 +72,7 @@ let ContainerInner = styled.div`
     background: white;
 
     > div {
-        padding: 30px;
+        padding: 30px 140px;
     }
 
     > div > h1 {
@@ -93,6 +93,10 @@ let ContainerInner = styled.div`
         border: 1px solid black;  
         flex-direction: column;
         overflow: scroll;
+
+        > div {
+            padding: 30px;
+        }
     }
 `
 

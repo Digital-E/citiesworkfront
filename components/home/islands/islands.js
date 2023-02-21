@@ -53,7 +53,7 @@ var parallaxInstance = null;
 
 let parallaxTimeout = null;
 
-export default function Component({ data, allProjects }) {
+export default function Component({ data, allProjects, activeTags }) {
   let [all, setAll] = useState([]);
   let [prevOpen, setPrevOpen] = useState(0);
   let [overlayOpen, setOverlayOpen] = useState(false);
@@ -136,7 +136,7 @@ export default function Component({ data, allProjects }) {
   return (
     <Container ref={containerRef} id="scene">
         {all.map((item, index) => 
-        <Island data={item} dataAll={all} index={index} toggle={() => toggleIsland(index)} prevOpen={prevOpen} allProjects={allProjects} />
+        <Island data={item} dataAll={all} index={index} toggle={() => toggleIsland(index)} prevOpen={prevOpen} allProjects={allProjects} activeTags={activeTags}/>
         )}
         <MobileList dataAll={all} allProjects={allProjects} closeAll={() => closeAll()}/>
         <Overlay animate={overlayOpen ? "visible" : "hidden"} variants={overlayVariants} onClick={() => closeAll()}/>

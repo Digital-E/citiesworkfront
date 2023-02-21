@@ -106,11 +106,15 @@ a:hover, button:hover {
     --plyr-range-thumb-shadow: transparent;
     --plyr-range-fill-background: white;
     --plyr-range-track-height: 2px;
-    --plyr-tooltip-radius: 0;
+    --plyr-tooltip-radius: 25px;
     --plyr-tooltip-background: transparent;
     --plyr-tooltip-shadow: transparent;
     --plyr-tooltip-color: white;
     --plyr-video-controls-background: transparent;
+  }
+
+  .plyr {
+    font-family: 'FluxischElse Regular';
   }
 
   .plyr__volume {

@@ -3,14 +3,11 @@ import styled from 'styled-components'
 
 import { useRouter } from 'next/router'
 
-import { gsap } from "gsap/dist/gsap";
-
 import { motion } from "framer-motion";
 
 import { store } from "../../../store";
 
 import splitSlug from "../../../lib/splitSlug"
-
 
 
 const Element = styled(motion.div)`
@@ -118,6 +115,14 @@ const Project = styled.div`
     opacity: 0.5;
     cursor: pointer;
   }
+
+  &.hide {
+    display: none;
+  }
+
+  &.show {
+    display: block;
+  }
 `
 
 let variants = {
@@ -140,7 +145,8 @@ let variants = {
 
 let closingIslandTimeout = null;
 
-export default function Component({ data, index, dataAll, allProjects, toggle, prevOpen }) {
+
+export default function Component({ data, index, dataAll, allProjects, toggle, prevOpen, activeTags }) {
     //Context
     const context = useContext(store);
     const { state, dispatch } = context;
@@ -150,6 +156,8 @@ export default function Component({ data, index, dataAll, allProjects, toggle, p
     let elRef = useRef();
     let islandSVGRef = useRef();
     let [isOpen, setIsOpen] = useState(false);
+
+    let [filteredProjects, setFilteredProjects] = useState(data.projects)
 
     let mouseEnter = () => {
         elRef.current.style.zIndex = 2;
@@ -189,6 +197,22 @@ export default function Component({ data, index, dataAll, allProjects, toggle, p
       })
     }, [])
 
+
+    useEffect(() => {
+      let copyProjects = []
+
+      if(data.projects !== undefined) {
+        copyProjects = JSON.parse(JSON.stringify(filteredProjects))
+      }
+
+      copyProjects.forEach((item, index) => {
+        item.show = true
+      })
+
+      setFilteredProjects(copyProjects)
+
+    }, [data])
+
     const route = (reference) => {
 
       let match = allProjects.filter(item => item._id === reference)
@@ -196,6 +220,62 @@ export default function Component({ data, index, dataAll, allProjects, toggle, p
       let pathname = `/${splitSlug(match[0].slug, 0)}/${splitSlug(match[0].slug, 1)}`
       router.push(pathname)
     }
+
+    useEffect(() => {
+
+      let filteredProjectsArray = [];
+
+      let tags = activeTags.map(item => {
+        if(item.isActive === true) {
+          return item.label
+        }
+      })
+
+      tags = tags.filter(item => item !== undefined)
+
+
+      allProjects.forEach(item => {
+        item.tags.forEach(tag => {
+          tags.forEach(tagTwo => {
+            if(tag === tagTwo) {
+              filteredProjectsArray.push(item)
+            }
+          })
+        })
+      })
+
+      let copyProjects = []
+
+      if(filteredProjects !== undefined) {
+        copyProjects = JSON.parse(JSON.stringify(filteredProjects))
+      }
+      
+
+      copyProjects.forEach((item, index) => {
+        let show = 0;
+        filteredProjectsArray.forEach((itemTwo, indexTwo) => {
+          if(item.project?._ref === itemTwo._id) {
+            show += 1;
+          }
+        })
+
+        if(show > 0) {
+          item.show = true
+        } else {
+          item.show = false
+        }
+      })
+
+      if(tags.length === 0) {
+        copyProjects.forEach((item, index) => {
+          item.show = true
+        })
+      }
+
+      setFilteredProjects(copyProjects)
+    
+      
+    }, [activeTags])
 
   return (
         <Element 
@@ -207,14 +287,14 @@ export default function Component({ data, index, dataAll, allProjects, toggle, p
             <div>
                 <Name x={data.titlePositionX} y={data.titlePositionY} className='island-text'>{data.title}</Name>
                 <Projects>
-                    {data.projects?.map(item => 
+                    {filteredProjects?.map(item => 
                     <Project 
                         x={item.titlePositionX} 
                         y={item.titlePositionY}
                         onMouseOver={() => mouseEnter()}
                         onMouseLeave={() => mouseLeave()}
                         onClick={() => route(item.project._ref)}
-                        className='island-text'
+                        className={`island-text ${item.show ? 'show' : 'hide'}`}
                         >
                             <img src={`/icons/keys/${index + 1}.svg`} />
                             {item.title}

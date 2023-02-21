@@ -93,7 +93,7 @@ let variants = {
 
 
 
-export default function Component({ data }) {
+export default function Component({ data, setActiveTags }) {
     let [filterOpen, setFilterOpen] = useState(false);
     let [tags, setTags] = useState([]);
     let [showClear, setShowClear] = useState(false);
@@ -121,7 +121,10 @@ export default function Component({ data }) {
             setShowClear(true)
         } else {
             setShowClear(false)
-        }        
+        }
+        
+        setActiveTags(tags)
+        
     }, [tags])
 
     let toggleTag = (i) => {

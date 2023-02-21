@@ -16,11 +16,13 @@ let renderSlice = (slice ,index) => {
     
       switch(slice._type) {
           case 'video':
-          return <SliceWrapper key={slice._id}><Video data={slice.video} id={`video-${index}`}/></SliceWrapper>
+          return <SliceWrapper key={slice._key}><Video data={slice} id={`video-${index}`}/></SliceWrapper>
           case 'image':
-          return <SliceWrapper key={slice._id} className="image-slice"><Image data={slice} hasCaption={true} /></SliceWrapper>
+          return <SliceWrapper key={slice._key} className="image-slice"><Image data={slice} hasCaption={true} /></SliceWrapper>
           case 'Text':
-          return <SliceWrapper key={slice._id} className={slice.doubleColumn ? "double-col" : ""}><Body content={slice.text} /></SliceWrapper>;
+          return <SliceWrapper key={slice._key}><Body content={slice.text} /></SliceWrapper>
+          default:
+          return null
       }
 }
 
@@ -28,7 +30,6 @@ let renderSlice = (slice ,index) => {
 export default function Component({ data }) {
 
     useEffect(() => {
-        // const players = Array.from(document.querySelectorAll('.player')).map((p) => new Plyr(p));
         const players = Plyr.setup('.player');
     },[])
 
