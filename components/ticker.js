@@ -10,7 +10,7 @@ const Container = styled.div`
   overflow: hidden;
   border-radius: 999px;
   border: 1px solid black;
-  z-index: 2;
+  z-index: 3;
   pointer-events: none;
 
   @media(max-width: 989px) {

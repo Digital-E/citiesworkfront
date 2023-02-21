@@ -11,8 +11,6 @@ import { motion } from 'framer-motion'
 import Slices from '../../components/slices'
 
 
-
-
 const Container = styled(motion.div)`
     position: fixed;
     height: 100%;
@@ -21,9 +19,12 @@ const Container = styled(motion.div)`
     z-index: 999;
     background: white;
 
+
     @media(max-width: 989px) {
-        width: 100%;
-    }
+        height: fit-content;
+        width: fit-content;
+        background: transparent;
+      }
 `
 
 const CloseButton = styled.div`
@@ -42,6 +43,11 @@ const CloseButton = styled.div`
     img {
         width: 30px;
     }
+
+    @media(max-width: 989px) {
+        right: 31px;
+        top: 41px;
+    }
 `
 
 let Overlay = styled(motion.div)`
@@ -50,7 +56,6 @@ let Overlay = styled(motion.div)`
   left: 0;
   height: 100vh !important;
   width: 100vw !important;
-//   backdrop-filter: blur(1px);
   z-index: 1;
   transform: none !important;
   pointer-events: all;
@@ -64,6 +69,7 @@ const Title = styled.h1`
 let ContainerInner = styled.div`
     height: 100%;
     overflow: scroll;
+    background: white;
 
     > div {
         padding: 30px;
@@ -72,25 +78,24 @@ let ContainerInner = styled.div`
     > div > h1 {
         padding-right: 50px;
     }
+
+    @media(max-width: 989px) {
+        position: fixed;
+        height: calc(100% - 230px) !important;
+        width: calc(100% - 60px) !important;
+        top: 90px !important;
+        left: 50% !important;
+        transform: translateX(-50%)!important;
+        z-index: 999;
+        box-sizing: border-box;
+        pointer-events: all; 
+        border-radius: 20px;
+        border: 1px solid black;  
+        flex-direction: column;
+        overflow: scroll;
+    }
 `
 
-
-
-
-let variants = {
-    open: {
-        right: 0,
-        transition: {
-            duration: 0.5
-        }
-    },
-    closed: {
-        right: "-45%",
-        transition: {
-            duration: 0.5
-        }
-    }
-}
 
 let overlayVariants = {
     "visible": {
@@ -131,20 +136,22 @@ export default ({ preview, data }) => {
 
         setTimeout(() => {
             router.push("/")
-        }, 250)
+        }, 300)
     }
 
     let variants = {
         open: {
             right: 0,
+            opacity: isDesktop ? 1 : 1,
             transition: {
-                duration: 0.5
+                duration: 0.3
             }
         },
         closed: {
-            right: isDesktop ? "-60%" : "-100%",
+            right: isDesktop ? "-60%" : 0,
+            opacity: isDesktop ? 1 : 0,
             transition: {
-                duration: 0.5
+                duration: 0.3
             }
         }
     }

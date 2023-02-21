@@ -11,6 +11,8 @@ import MobileList from "../mobile-list"
 
 import Parallax from 'parallax-js'
 
+import { useMediaQuery } from 'react-responsive';
+
 
 const Container = styled.div`
   position: fixed;
@@ -57,6 +59,18 @@ export default function Component({ data, allProjects }) {
   let [overlayOpen, setOverlayOpen] = useState(false);
   let containerRef = useRef();
 
+  const isDesktop = useMediaQuery({
+    query: '(min-width: 990px)'
+  })
+
+  useEffect(() => {
+    if(isDesktop) {
+      parallaxInstance?.enable()
+    } else {
+      parallaxInstance?.disable()
+    }
+  }, [isDesktop])
+
 
   useEffect(() => {
     
@@ -69,8 +83,8 @@ export default function Component({ data, allProjects }) {
         // scalarX: 100,
         // scalarY: 100,
       });
-
     }, 0)
+
   }, []);
 
 

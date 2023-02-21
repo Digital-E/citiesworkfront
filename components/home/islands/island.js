@@ -73,7 +73,9 @@ const Element = styled(motion.div)`
   }
 
   @media(max-width: 989px) {
+    left: ${props => parseInt(props.data.islandPositionX) - 8 }% !important;
     top: ${props => parseInt(props.data.islandPositionY) + 10 }% !important;
+    width: 60%;
 
 
     > div > div:nth-child(2)

@@ -12,7 +12,7 @@ let Container = styled.header`
   display: flex;
   align-items: center;
   padding: 30px 30px;
-  z-index: 2;
+  z-index: 3;
   top: 0;
   box-sizing: border-box;
   pointer-events: none;

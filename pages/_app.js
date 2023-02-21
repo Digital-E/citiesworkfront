@@ -50,7 +50,7 @@ function MyApp({ Component, pageProps, router }) {
         onDecline={() => {}}
         >
         <Body content={pageProps.data?.menuData.cookietext} />
-      </CookieConsent> */}   
+      </CookieConsent> */}              
       <Component {...pageProps} />
       {/* <Footer data={pageProps.data?.footerData}/> */}
     </StateProvider>

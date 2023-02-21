@@ -49,7 +49,9 @@ const Container = styled.div`
 
         &.hide-filter {
             transform: translateY(0px);
-            filter: blur(10px);
+            // filter: blur(10px);
+            opacity: 0;
+            transition-duration: 0.3s;
         }
 
         &.hide-filter > div {
