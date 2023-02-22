@@ -14,12 +14,13 @@ const ListItem = styled.div`
 
     &.show-project {
         opacity: 1;
-        transition-duration: 0.3s;
+        transition-duration: 0.2s;
     }
 
     &.hide-project {
-        opacity: 0.2;
-        transition-duration: 0.3s; 
+        opacity: 0.1;
+        transition-duration: 0.2s; 
+        pointer-events: none;
     }
 `
 
