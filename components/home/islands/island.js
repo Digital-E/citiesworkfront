@@ -19,11 +19,18 @@ const Element = styled(motion.div)`
   pointer-events: none;
   z-index: auto;
 
-  transition: 0.1s;
+  transition: opacity 0.5s, transform 1s, left 1s, top 1s;
 
   &.closing-island {
-    transition: 1s;
     z-index: 2 !important;
+  }
+
+  &.show-island {
+    opacity: 1;
+  }
+
+  &.hide-island {
+    opacity: 0;
   }
 
   @media(min-width: 990px) {
@@ -33,7 +40,6 @@ const Element = styled(motion.div)`
       top: 50% !important;
       transform: translate(-50%, -50%) scale(1.7) !important;
       z-index: 2 !important;
-      transition: 1s;
     }
   }
 
@@ -116,12 +122,14 @@ const Project = styled.div`
     cursor: pointer;
   }
 
-  &.hide {
-    display: none;
+  &.show-project {
+    opacity: 1;
+    transition-duration: 0.3s;
   }
 
-  &.show {
-    display: block;
+  &.hide-project {
+    opacity: 0;
+    transition-duration: 0.3s;
   }
 `
 
@@ -146,7 +154,7 @@ let variants = {
 let closingIslandTimeout = null;
 
 
-export default function Component({ data, index, dataAll, allProjects, toggle, prevOpen, activeTags }) {
+export default function Component({ data, index, dataAll, allProjects, toggle, prevOpen }) {
     //Context
     const context = useContext(store);
     const { state, dispatch } = context;
@@ -156,8 +164,6 @@ export default function Component({ data, index, dataAll, allProjects, toggle, p
     let elRef = useRef();
     let islandSVGRef = useRef();
     let [isOpen, setIsOpen] = useState(false);
-
-    let [filteredProjects, setFilteredProjects] = useState(data.projects)
 
     let mouseEnter = () => {
         elRef.current.style.zIndex = 2;
@@ -198,21 +204,6 @@ export default function Component({ data, index, dataAll, allProjects, toggle, p
     }, [])
 
 
-    useEffect(() => {
-      let copyProjects = []
-
-      if(data.projects !== undefined) {
-        copyProjects = JSON.parse(JSON.stringify(filteredProjects))
-      }
-
-      copyProjects.forEach((item, index) => {
-        item.show = true
-      })
-
-      setFilteredProjects(copyProjects)
-
-    }, [data])
-
     const route = (reference) => {
 
       let match = allProjects.filter(item => item._id === reference)
@@ -221,61 +212,6 @@ export default function Component({ data, index, dataAll, allProjects, toggle, p
       router.push(pathname)
     }
 
-    useEffect(() => {
-
-      let filteredProjectsArray = [];
-
-      let tags = activeTags.map(item => {
-        if(item.isActive === true) {
-          return item.label
-        }
-      })
-
-      tags = tags.filter(item => item !== undefined)
-
-
-      allProjects.forEach(item => {
-        item.tags.forEach(tag => {
-          tags.forEach(tagTwo => {
-            if(tag === tagTwo) {
-              filteredProjectsArray.push(item)
-            }
-          })
-        })
-      })
-
-      let copyProjects = []
-
-      if(filteredProjects !== undefined) {
-        copyProjects = JSON.parse(JSON.stringify(filteredProjects))
-      }
-      
-
-      copyProjects.forEach((item, index) => {
-        let show = 0;
-        filteredProjectsArray.forEach((itemTwo, indexTwo) => {
-          if(item.project?._ref === itemTwo._id) {
-            show += 1;
-          }
-        })
-
-        if(show > 0) {
-          item.show = true
-        } else {
-          item.show = false
-        }
-      })
-
-      if(tags.length === 0) {
-        copyProjects.forEach((item, index) => {
-          item.show = true
-        })
-      }
-
-      setFilteredProjects(copyProjects)
-    
-      
-    }, [activeTags])
 
   return (
         <Element 
@@ -283,18 +219,19 @@ export default function Component({ data, index, dataAll, allProjects, toggle, p
             data={data} 
             data-depth={data.dataDepth}
             variants={variants}
+            className={data.show ? 'show-island' : 'hide-island'}
             >
             <div>
                 <Name x={data.titlePositionX} y={data.titlePositionY} className='island-text'>{data.title}</Name>
                 <Projects>
-                    {filteredProjects?.map(item => 
+                    {data.projects?.map(item => 
                     <Project 
                         x={item.titlePositionX} 
                         y={item.titlePositionY}
                         onMouseOver={() => mouseEnter()}
                         onMouseLeave={() => mouseLeave()}
                         onClick={() => route(item.project._ref)}
-                        className={`island-text ${item.show ? 'show' : 'hide'}`}
+                        className={`island-text ${item.show ? 'show-project' : 'hide-project'}`}
                         >
                             <img src={`/icons/keys/${index + 1}.svg`} />
                             {item.title}

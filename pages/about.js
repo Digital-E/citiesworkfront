@@ -19,7 +19,9 @@ import Grid from "../components/home/grid"
 import { forEach } from 'lodash'
 
 const Container = styled(motion.div)`
-    position: relative;
+    position: fixed;
+    height: 100%;
+    width: 100%;
     display: flex;
     align-items: center;
     height: auto;

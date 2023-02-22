@@ -16,8 +16,8 @@ import { useMediaQuery } from 'react-responsive';
 
 const Container = styled.div`
   position: fixed;
-  height: 100vh;
-  width: 100vw;
+  height: 100%;
+  width: 100%;
   left: 0;
   top: 0;
   overflow: hidden;
@@ -28,8 +28,8 @@ let Overlay = styled(motion.div)`
   position: fixed;
   top: 0;
   left: 0;
-  height: 100vh !important;
-  width: 100vw !important;
+  height: 100% !important;
+  width: 100% !important;
   backdrop-filter: blur(10px);
   z-index: 1;
   transform: none !important;
@@ -49,7 +49,7 @@ let overlayVariants = {
   }
 }
 
-var parallaxInstance = null;
+let parallaxInstance = null;
 
 let parallaxTimeout = null;
 
@@ -59,17 +59,11 @@ export default function Component({ data, allProjects, activeTags }) {
   let [overlayOpen, setOverlayOpen] = useState(false);
   let containerRef = useRef();
 
+  let allRef = useRef(all);
+
   const isDesktop = useMediaQuery({
     query: '(min-width: 990px)'
   })
-
-  useEffect(() => {
-    if(isDesktop) {
-      parallaxInstance?.enable()
-    } else {
-      parallaxInstance?.disable()
-    }
-  }, [isDesktop])
 
 
   useEffect(() => {
@@ -86,6 +80,16 @@ export default function Component({ data, allProjects, activeTags }) {
     }, 0)
 
   }, []);
+
+  useEffect(() => {
+    setTimeout(() => {
+      if(isDesktop) {
+        parallaxInstance?.enable()
+      } else {
+        parallaxInstance?.disable()
+      }
+    }, 0)
+  }, [isDesktop])
 
 
   useEffect(() => {
@@ -119,9 +123,11 @@ export default function Component({ data, allProjects, activeTags }) {
 
   let toggleIsland = (index) => {
     setPrevOpen(index);
-    let copyAll = JSON.parse(JSON.stringify(all))
+    let copyAll = JSON.parse(JSON.stringify(allRef.current))
     copyAll[index].isOpen = true
+
     setAll(copyAll)
+    allRef.current = copyAll
   }
 
   let closeAll = () => {
@@ -130,7 +136,95 @@ export default function Component({ data, allProjects, activeTags }) {
     copyAll.forEach(item => item.isOpen = false)
 
     setAll(copyAll)
+    allRef.current = copyAll
   }
+
+
+  useEffect(() => {
+    
+      let filteredProjectsArray = [];
+
+      let tags = activeTags.map(item => {
+        if(item.isActive === true) {
+          return item.label
+        }
+      })
+
+      tags = tags.filter(item => item !== undefined)
+
+
+      allProjects?.forEach(item => {
+        item.tags.forEach(tag => {
+          tags.forEach(tagTwo => {
+            if(tag === tagTwo) {
+              filteredProjectsArray.push(item)
+            }
+          })
+        })
+      })
+
+      let copyProjects = []
+
+      copyProjects = JSON.parse(JSON.stringify(all))  
+      
+      // Hide/Show Island ?
+
+      copyProjects.forEach(item => {
+        let show = 0;
+
+        item.projects?.forEach(itemTwo => {
+          filteredProjectsArray.forEach(itemThree => {
+            if(itemTwo.project?._ref === itemThree._id) {
+              show += 1;
+            }
+          })
+        })
+
+        if(show > 0) {
+          item.show = true
+        } else {
+          item.show = false
+        }
+      })
+
+      
+      // Hide/Show Project ?
+
+      copyProjects.forEach(item => {
+
+        item.projects?.forEach(itemTwo => {
+          let show = 0;
+
+          filteredProjectsArray.forEach(itemThree => {
+            if(itemTwo.project?._ref === itemThree._id) {
+              show += 1;
+            }
+          })
+
+          if(show > 0) {
+            itemTwo.show = true
+          } else {
+            itemTwo.show = false
+          }          
+        })
+      })
+
+      if(tags.length === 0) {
+        copyProjects.forEach((item, index) => {
+          item.show = true
+
+          item.projects?.forEach(itemTwo => {
+              itemTwo.show = true
+          })
+        })
+      }
+    
+      if(copyProjects.length === 0) return 
+
+      setAll(copyProjects)
+      allRef.current = copyProjects
+
+  }, [activeTags])
 
 
   return (

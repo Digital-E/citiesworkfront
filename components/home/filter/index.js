@@ -49,14 +49,13 @@ const Container = styled.div`
 
         &.hide-filter {
             transform: translateY(0px);
-            // filter: blur(10px);
-            opacity: 0;
+            // opacity: 0;
             transition-duration: 0.3s;
         }
 
-        &.hide-filter > div {
-            pointer-events: none !important;
-        }
+        // &.hide-filter > div {
+        //     pointer-events: none !important;
+        // }
     }
 `
 

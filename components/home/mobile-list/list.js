@@ -11,6 +11,16 @@ const Container = styled(motion.div)`
 
 const ListItem = styled.div`
     border-top: 1px solid black;
+
+    &.show-project {
+        opacity: 1;
+        transition-duration: 0.3s;
+    }
+
+    &.hide-project {
+        opacity: 0.2;
+        transition-duration: 0.3s; 
+    }
 `
 
 const Title = styled.p``
@@ -31,7 +41,7 @@ const Component = ({ data, allProjects }) => {
     return (
         <Container>
             {data?.projects?.map(item => (
-            <ListItem onClick={() => route(item.project._ref)}>
+            <ListItem onClick={() => route(item.project._ref)} className={item.show ? 'show-project' : 'hide-project'}>
                 <Title>{item.title}</Title>
             </ListItem>
             ))}
