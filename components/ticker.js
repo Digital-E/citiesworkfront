@@ -51,8 +51,15 @@ const Container = styled.div`
 
   .ticker__item-element {
     position: relative;
-    margin-right: 0
+    margin-right: 0;
+    font-size: 1.22rem;
   }
+
+  @media(max-width: 989px) {
+    .ticker__item-element {
+        font-size: 0.9rem;
+    }
+}
 
   .ticker__item > div:not(:nth-last-child(2)) {
     margin-right: 20px;

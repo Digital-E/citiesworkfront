@@ -29,13 +29,12 @@ const Container = styled(motion.div)`
 
     @media(min-width: 990px) {
       height: 100vh;
-      background: white;
+      // background: white;
     }
 `
 
 const ContainerInner = styled.div`
   width: 100%;
-  background: white;
 
   @media(max-width: 989px) {
     position: fixed;
@@ -45,6 +44,7 @@ const ContainerInner = styled.div`
     left: 50% !important;
     transform: translateX(-50%)!important;
     z-index: 999;
+    background: white;
     box-sizing: border-box;
     pointer-events: all; 
     border-radius: 20px;
@@ -167,7 +167,11 @@ let Overlay = styled(motion.div)`
   z-index: 1;
   transform: none !important;
   pointer-events: all;
-  backdrop-filter: blur(20px);
+  backdrop-filter: blur(2px);
+
+  @media(min-width: 990px) {
+    backdrop-filter: blur(20px);
+  }
 `
 
 

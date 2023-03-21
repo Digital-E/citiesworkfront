@@ -15,7 +15,7 @@ const Element = styled(motion.div)`
   display: flex;
   left: ${props => props.data.islandPositionX }% !important;
   top: ${props => props.data.islandPositionY }% !important;
-  width: 40%;
+  width: ${props => props.data.islandWidth }%;
   pointer-events: none;
   z-index: auto;
 
@@ -94,7 +94,12 @@ const Name = styled.div`
   left: ${props => props.x}%;
   transform: translate(-50%, -50%);
   font-family: FluxischElse Light;
-  font-size: 1rem;
+  font-size: 1.22rem;
+  -webkit-text-stroke: 0.4px white;
+
+  @media(max-width: 989px) {
+    font-size: 0.9rem;
+  }
 `
 
 const Projects = styled.div`
@@ -106,8 +111,9 @@ const Project = styled.div`
   left: ${props => props.x}%;
   transform: translate(-50%, -50%);
   font-family: FluxischElse Light;
-  font-size: 0.8rem;
+  font-size: 1rem;
   pointer-events: all;
+  -webkit-text-stroke: 0.3px white;
 
   display: flex;
   align-items: center;
@@ -130,6 +136,10 @@ const Project = styled.div`
   &.hide-project {
     opacity: 0;
     transition-duration: 0.3s;
+  }
+
+  @media(max-width: 989px) {
+    font-size: 0.9rem;
   }
 `
 
@@ -233,7 +243,7 @@ export default function Component({ data, index, dataAll, allProjects, toggle, p
                         onClick={() => route(item.project._ref)}
                         className={`island-text ${item.show ? 'show-project' : 'hide-project'}`}
                         >
-                            <img src={`/icons/keys/${index + 1}.svg`} />
+                            <img src={`/icons/keys/${2}.svg`} />
                             {item.title}
                     </Project>
                     )}

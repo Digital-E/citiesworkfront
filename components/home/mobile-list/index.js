@@ -27,6 +27,10 @@ const Container = styled(motion.div)`
 
 const Title = styled.h3`
     margin-bottom: 20px;
+
+    @media(max-width: 989px) {
+        font-size: 2rem;
+    }
 `
 
 const CloseButton = styled.div`

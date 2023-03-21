@@ -14,7 +14,7 @@ import Slices from '../../components/slices'
 const Container = styled(motion.div)`
     position: fixed;
     height: 100%;
-    width: 60%;
+    width: 90%;
     right: 0;
     z-index: 999;
     background: white;
@@ -30,7 +30,7 @@ const Container = styled(motion.div)`
 const CloseButton = styled.div`
     position: absolute;
     right: 30px;
-    top: 30px;
+    top: 40px;
     font-family: "Picnic Regular";
     cursor: pointer;
     transition: 0.2s;
@@ -41,12 +41,16 @@ const CloseButton = styled.div`
     }
 
     img {
-        width: 30px;
+        width: 43px;
     }
 
     @media(max-width: 989px) {
         right: 31px;
         top: 41px;
+
+        img {
+            width: 30px;
+        }
     }
 `
 
@@ -61,8 +65,21 @@ let Overlay = styled(motion.div)`
   pointer-events: all;
 `
 
+const Name = styled.h1`
+    margin-bottom: 0px;
+
+    @media(max-width: 989px) {
+        font-size: 2rem;
+    }
+`
+
 const Title = styled.h1`
     margin-bottom: 30px;
+    margin-left: 30px;
+
+    @media(max-width: 989px) {
+        font-size: 2rem;
+    }
 `
 
 
@@ -95,7 +112,7 @@ let ContainerInner = styled.div`
         overflow: scroll;
 
         > div {
-            padding: 30px;
+            padding: 30px 10px;
         }
     }
 `
@@ -152,7 +169,7 @@ export default ({ preview, data }) => {
             }
         },
         closed: {
-            right: isDesktop ? "-60%" : 0,
+            right: isDesktop ? "-90%" : 0,
             opacity: isDesktop ? 1 : 0,
             transition: {
                 duration: 0.3
@@ -167,6 +184,7 @@ export default ({ preview, data }) => {
                 <CloseButton onClick={() => hasClicked()}><img src="/icons/close.svg" /></CloseButton>
                 <ContainerInner>
                     <div>
+                        <Name>{ data?.name }</Name>
                         <Title>{ data?.title }</Title>
                         <Slices data={ data?.slices } />
                     </div>

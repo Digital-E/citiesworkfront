@@ -26,11 +26,17 @@ const Container = styled(motion.div)`
         display: block;
         color: black;
         font-family: FluxischElse Light;
-        font-size: 1rem;
+        font-size: 1.22rem;
         text-decoration: none;
         line-height: 1;
         padding: 0.5rem 0.5rem;
         margin: 0;
+    }
+
+    @media(max-width: 989px) {
+        > span {
+            font-size: 0.9rem;
+        }
     }
 `
 
