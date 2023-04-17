@@ -128,6 +128,12 @@ const Columns = styled.div`
         margin-top: 0 !important;
       }
     }
+
+    @media(max-width: 989px) {
+      h5 {
+        font-size: 2rem;
+      }
+    }
 `;
 
 const GridWrapper = styled.div`

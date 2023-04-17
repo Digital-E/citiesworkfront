@@ -14,7 +14,7 @@ import Slices from '../../components/slices'
 const Container = styled(motion.div)`
     position: fixed;
     height: 100%;
-    width: 90%;
+    width: 87.5%;
     right: 0;
     z-index: 999;
     background: white;
@@ -79,6 +79,7 @@ const Title = styled.h1`
 
     @media(max-width: 989px) {
         font-size: 2rem;
+        margin-bottom: 15px;
     }
 `
 
@@ -169,7 +170,7 @@ export default ({ preview, data }) => {
             }
         },
         closed: {
-            right: isDesktop ? "-90%" : 0,
+            right: isDesktop ? "-87.5%" : 0,
             opacity: isDesktop ? 1 : 0,
             transition: {
                 duration: 0.3

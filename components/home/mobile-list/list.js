@@ -24,7 +24,9 @@ const ListItem = styled.div`
     }
 `
 
-const Title = styled.p``
+const Title = styled.p`
+    margin: 10px 0;
+`
 
 
 
