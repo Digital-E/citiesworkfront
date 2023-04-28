@@ -9,12 +9,13 @@ import { store } from '../../store'
 import { motion } from 'framer-motion'
 
 import Slices from '../../components/slices'
+import { clone } from 'lodash';
 
 
 const Container = styled(motion.div)`
     position: fixed;
     height: 100%;
-    width: 87.5%;
+    width: calc(100% - 220px);
     right: 0;
     z-index: 999;
     background: white;
@@ -24,7 +25,7 @@ const Container = styled(motion.div)`
         height: fit-content;
         width: fit-content;
         background: transparent;
-      }
+    }
 `
 
 const CloseButton = styled.div`
@@ -85,12 +86,13 @@ const Title = styled.h1`
 
 
 let ContainerInner = styled.div`
+    display: flex;
     height: 100%;
-    overflow: scroll;
+    width: 100%;
     background: white;
 
     > div {
-        padding: 30px 140px;
+        flex-basis: 50%;
     }
 
     > div > h1 {
@@ -110,11 +112,55 @@ let ContainerInner = styled.div`
         border-radius: 20px;
         border: 1px solid black;  
         flex-direction: column;
-        overflow: scroll;
 
         > div {
+            flex-basis: 100%;
             padding: 30px 10px;
         }
+    }
+`
+
+const ColLeft = styled.div`
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    overflow: scroll;
+    padding-left: 30px;
+
+    @media(max-width: 989px) {
+        display: none;
+    }
+`
+
+const ColRight = styled.div`
+    overflow: scroll;
+    padding: 30px 30px;
+
+    > div {
+        padding-bottom: 30px;
+    }
+
+    @media(min-width: 989px) {
+        .media-slice {
+            height: 0;
+            overflow: hidden;
+        }
+    }
+`
+
+const SlicesWrapper = styled.div`
+    @media(min-width: 990px) {
+        margin-top: 150px;
+    }
+`
+
+const MediaContainer = styled.div`
+    > div {
+        display: none;
+    }
+
+    .show-media-slice {
+        display: block !important;
     }
 `
 
@@ -138,6 +184,10 @@ export default ({ preview, data }) => {
     const context = useContext(store);
     const { state, dispatch } = context;
 
+    let colLeftRef = useRef();
+    let colRightRef = useRef();
+    let currentMediaIndex = useRef(-1);
+
     const isDesktop = useMediaQuery({
         query: '(min-width: 990px)'
     })
@@ -148,9 +198,42 @@ export default ({ preview, data }) => {
 
     let [reveal, setReveal] = useState(false);
 
+    let isInViewport = (item, index) => {
+
+        if(item.getBoundingClientRect().y < window.innerHeight / 2 && item.getBoundingClientRect().y > 0)  {
+
+            if(index !== currentMediaIndex.current) {
+                Array.from(colLeftRef.current.children[0].children).forEach(item => {
+                    item.classList.remove('show-media-slice')
+                })
+                // let cloneNode = item.cloneNode(true)
+                // cloneNode.classList.remove('media-slice')
+                // colLeftRef.current.children[0].appendChild(cloneNode)
+                colLeftRef.current.children[0].children[index].classList.add('show-media-slice')
+                currentMediaIndex.current = index
+            }
+        }
+    }
 
     useEffect(() => {
         setReveal(true)
+
+        setTimeout(() => {
+            Array.from(colLeftRef.current.children[0].children).forEach((item, index) => {
+                if(!item.classList.contains('media-slice')) {
+                    colLeftRef.current.children[0].removeChild(item)
+                }
+
+                item.classList.remove('media-slice')
+            })
+
+            document.querySelectorAll('.media-slice').forEach((item, index) => isInViewport(item, index))
+        }, 0)
+
+        colRightRef.current.addEventListener('scroll', () => {
+            document.querySelectorAll('.media-slice').forEach((item, index) => isInViewport(item, index))
+        })
+
     }, [])
 
     let hasClicked = () => {
@@ -164,13 +247,13 @@ export default ({ preview, data }) => {
     let variants = {
         open: {
             right: 0,
-            opacity: isDesktop ? 1 : 1,
+            opacity: 1,
             transition: {
                 duration: 0.3
             }
         },
         closed: {
-            right: isDesktop ? "-87.5%" : 0,
+            right: isDesktop ? "-100%" : 0,
             opacity: isDesktop ? 1 : 0,
             transition: {
                 duration: 0.3
@@ -184,11 +267,20 @@ export default ({ preview, data }) => {
             <Container ref={containerRef} initial="closed" animate={reveal ? "open" : "closed"} variants={variants}>
                 <CloseButton onClick={() => hasClicked()}><img src="/icons/close.svg" /></CloseButton>
                 <ContainerInner>
-                    <div>
-                        <Name>{ data?.name }</Name>
-                        <Title>{ data?.title }</Title>
-                        <Slices data={ data?.slices } />
-                    </div>
+                    <ColLeft ref={colLeftRef}>
+                        <MediaContainer>
+                            <Slices data={ data?.slices } />
+                        </MediaContainer>
+                    </ColLeft>
+                    <ColRight ref={colRightRef}>
+                        <div>
+                            <Name>{ data?.name }</Name>
+                            <Title>{ data?.title }</Title>
+                            <SlicesWrapper>
+                                <Slices data={ data?.slices } />
+                            </SlicesWrapper>
+                        </div>
+                    </ColRight>
                 </ContainerInner>
             </Container>
             <Overlay animate={reveal ? "visible" : "hidden"} variants={overlayVariants} onClick={() => hasClicked()}/>

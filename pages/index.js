@@ -66,8 +66,7 @@ export default function Index({ data = {}, preview }) {
           content={data?.homeData?.content}
           />
         </Head>
-        <Container>
-        </Container>
+        <Container></Container>
       </Layout>
     </>
   )

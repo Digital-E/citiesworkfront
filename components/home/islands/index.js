@@ -13,6 +13,12 @@ import Parallax from 'parallax-js'
 
 import { useMediaQuery } from 'react-responsive';
 
+let Flickity = null;
+
+if(typeof window !== 'undefined') {
+    Flickity = require('flickity')
+}
+
 
 const Container = styled.div`
   position: fixed;
@@ -22,6 +28,27 @@ const Container = styled.div`
   top: 0;
   overflow: hidden;
   z-index: 1;
+
+  @media(max-width: 989px) {
+    display: flex;
+    align-items: center;
+  }
+`
+
+const Carousel = styled.div`
+    position: relative;
+    width: 100%;
+    outline: none !important;
+    overflow: hidden;
+
+    .flickity-viewport {
+        overflow: visible;
+    }
+
+    @media(min-width: 990px) {
+      height: 100%;
+    }
+    
 `
 
 let Overlay = styled(motion.div)`
@@ -34,6 +61,11 @@ let Overlay = styled(motion.div)`
   z-index: 1;
   transform: none !important;
   pointer-events: all;
+
+  @media(max-width: 989px) {
+    height: 0 !important;
+    width: 0 !important;
+  }
 `
 
 let overlayVariants = {
@@ -57,7 +89,7 @@ export default function Component({ data, allProjects, activeTags }) {
   let [all, setAll] = useState([]);
   let [prevOpen, setPrevOpen] = useState(0);
   let [overlayOpen, setOverlayOpen] = useState(false);
-  let containerRef = useRef();
+  let carouselRef = useRef();
 
   let allRef = useRef(all);
 
@@ -65,31 +97,90 @@ export default function Component({ data, allProjects, activeTags }) {
     query: '(min-width: 990px)'
   })
 
+  let scene = null;
+  let flickity = null;
 
-  useEffect(() => {
-    
-    setAll(data.islands)
 
+  let initCarousel = () => {
+      if(flickity !== null) return
+
+      flickity = new Flickity(carouselRef.current, {
+          prevNextButtons: false,
+          pageDots: false,
+          selectedAttraction: 0.07,
+          friction: 0.42,
+          cellAlign: "center",
+          percentPosition: true,
+          wrapAround: true,
+      })
+
+      flickity.on('staticClick', (event, pointer, cellElement, cellIndex) => {
+        toggleIsland(cellIndex)
+      })
+  }  
+
+  let destroyCarousel = () => {
+      if(flickity === null) return
+      flickity.destroy()
+      flickity = null
+  }  
+
+  let initParallax = () => {
     setTimeout(() => {
-      var scene = document.getElementById('scene');
+      scene = document.getElementById('scene');
       parallaxInstance = new Parallax(scene, {
         // relativeInput: true
         // scalarX: 100,
         // scalarY: 100,
       });
     }, 0)
+  }
+
+  let destroyParallax = () => {
+    parallaxInstance?.disable()
+  }
+
+  useEffect(() => {
+    
+    setAll(data.islands)
+
+    if(window.innerWidth < 990) {
+      setTimeout(() => {
+        initCarousel();
+      }, 0)
+    } else {
+      initParallax();
+    }
+
+    window.addEventListener("resize", () => {
+      if(window.innerWidth > 989) {
+          destroyCarousel();
+          if(!parallaxInstance) {
+            initParallax();
+          } else {
+            parallaxInstance?.enable()
+          }
+          // desktopResizeCount += 1
+          // hasPositioned = false;
+          // positionCards();
+      } else {
+          // desktopResizeCount = -1
+          initCarousel();
+          destroyParallax();
+      }
+    })      
 
   }, []);
 
-  useEffect(() => {
-    setTimeout(() => {
-      if(isDesktop) {
-        parallaxInstance?.enable()
-      } else {
-        parallaxInstance?.disable()
-      }
-    }, 0)
-  }, [isDesktop])
+  // useEffect(() => {
+  //   setTimeout(() => {
+  //     if(isDesktop) {
+  //       parallaxInstance?.enable()
+  //     } else {
+  //       parallaxInstance?.disable()
+  //     }
+  //   }, 0)
+  // }, [isDesktop])
 
 
   useEffect(() => {
@@ -120,6 +211,11 @@ export default function Component({ data, allProjects, activeTags }) {
       }, 1000)
     }
   },[all])
+
+  let clickIsland = (index) => {
+    if(window.innerWidth < 990) return
+      toggleIsland(index)
+  }
 
   let toggleIsland = (index) => {
     setPrevOpen(index);
@@ -228,12 +324,14 @@ export default function Component({ data, allProjects, activeTags }) {
 
 
   return (
-    <Container ref={containerRef} id="scene">
+    <Container>
+      <Carousel id="scene" ref={carouselRef}>
         {all.map((item, index) => 
-        <Island data={item} dataAll={all} index={index} toggle={() => toggleIsland(index)} prevOpen={prevOpen} allProjects={allProjects} activeTags={activeTags}/>
+          <Island data={item} dataAll={all} index={index} toggle={() => clickIsland(index)} prevOpen={prevOpen} allProjects={allProjects} activeTags={activeTags} platform='desktop'/>
         )}
-        <MobileList dataAll={all} allProjects={allProjects} closeAll={() => closeAll()}/>
-        <Overlay animate={overlayOpen ? "visible" : "hidden"} variants={overlayVariants} onClick={() => closeAll()}/>
+       <Overlay animate={overlayOpen ? "visible" : "hidden"} variants={overlayVariants} onClick={() => closeAll()}/>
+      </Carousel>
+      <MobileList dataAll={all} allProjects={allProjects} closeAll={() => closeAll()}/>
     </Container>
   )
 }

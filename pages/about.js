@@ -168,6 +168,7 @@ let Overlay = styled(motion.div)`
   position: fixed;
   top: 0;
   left: 0;
+  opacity: 0;
   height: 100vh !important;
   width: 100vw !important;
   z-index: 1;
@@ -230,12 +231,18 @@ export default function About({ data = {}, preview }) {
   } 
   
   let overlayVariants = {
-    "visible": {
+    visible: {
       opacity: 1,
       display: "block",
+      transition: {
+        duration: 0.3
+      },
     },
-    "hidden": {
+    hidden: {
       opacity: 0,
+      transition: {
+        duration: 1
+      },
       transitionEnd: {
         display: "none",
       },
@@ -247,7 +254,7 @@ export default function About({ data = {}, preview }) {
         opacity: 1,
         display: 'flex',
         transition: {
-            duration: 0.3
+            duration: 1
         }
       },
       closed: {

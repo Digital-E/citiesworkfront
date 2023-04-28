@@ -16,9 +16,9 @@ let renderSlice = (slice ,index) => {
     
       switch(slice._type) {
           case 'video':
-          return <SliceWrapper key={slice._key}><Video data={slice} id={`video-${index}`}/></SliceWrapper>
+          return <SliceWrapper key={slice._key} className='media-slice'><Video data={slice} id={`video-${index}`}/></SliceWrapper>
           case 'image':
-          return <SliceWrapper key={slice._key} className="image-slice"><Image data={slice} hasCaption={true} /></SliceWrapper>
+          return <SliceWrapper key={slice._key} className='media-slice'><Image data={slice} hasCaption={true} /></SliceWrapper>
           case 'Text':
           return <SliceWrapper key={slice._key}><Body content={slice.text} /></SliceWrapper>
           default:

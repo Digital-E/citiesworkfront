@@ -19,10 +19,11 @@ const Element = styled(motion.div)`
   pointer-events: none;
   z-index: auto;
 
-  transition: opacity 0.5s, transform 1s, left 1s, top 1s;
+  transition: opacity 0.5;
 
   &.closing-island {
     z-index: 2 !important;
+    transition: opacity 0.5s, transform 1s, left 1s, top 1s;
   }
 
   &.show-island {
@@ -40,6 +41,7 @@ const Element = styled(motion.div)`
       top: 50% !important;
       transform: translate(-50%, -50%) scale(1.7) !important;
       z-index: 2 !important;
+      transition: opacity 0.5s, transform 1s, left 1s, top 1s;
     }
   }
 
@@ -69,6 +71,8 @@ const Element = styled(motion.div)`
 
   > div {
     transition: transform 0.7s;
+    height: 100%;
+    width: 100%;
   }
 
   &.hover-island > div {
@@ -76,9 +80,14 @@ const Element = styled(motion.div)`
   }
 
   @media(max-width: 989px) {
-    left: ${props => parseInt(props.data.islandPositionX) - 8 }% !important;
-    top: ${props => parseInt(props.data.islandPositionY) + 10 }% !important;
-    width: 60%;
+    // display: ${props => props.platform === 'desktop' ? 'none' : 'block'};
+    // left: ${props => parseInt(props.data.islandPositionX) - 8 }% !important;
+    // top: ${props => parseInt(props.data.islandPositionY) + 10 }% !important;
+    left: 0 !important;
+    top: 0 !important;
+    width: 80% !important;
+    height: auto;
+    transition: opacity 0.5s, transform 0s, left 0s, top 0s;
 
 
     > div > div:nth-child(2)
@@ -164,7 +173,7 @@ let variants = {
 let closingIslandTimeout = null;
 
 
-export default function Component({ data, index, dataAll, allProjects, toggle, prevOpen }) {
+export default function Component({ data, index, dataAll, allProjects, toggle, prevOpen, platform }) {
     //Context
     const context = useContext(store);
     const { state, dispatch } = context;
@@ -230,6 +239,7 @@ export default function Component({ data, index, dataAll, allProjects, toggle, p
             data-depth={data.dataDepth}
             variants={variants}
             className={data.show ? 'show-island' : 'hide-island'}
+            platform={platform}
             >
             <div>
                 <Name x={data.titlePositionX} y={data.titlePositionY} className='island-text'>{data.title}</Name>
