@@ -116,6 +116,7 @@ a:hover, button:hover {
     --plyr-tooltip-shadow: transparent;
     --plyr-tooltip-color: white;
     --plyr-video-controls-background: transparent;
+    
   }
 
   .plyr {
@@ -136,8 +137,12 @@ a:hover, button:hover {
     color: black !important;
 }
 
-.plyr--video .plyr__control.plyr__tab-focus, .plyr--video .plyr__control:hover, .plyr--video .plyr__control[aria-expanded=true] {
+.plyr__control.plyr__tab-focus, .plyr__control:hover, .plyr__control[aria-expanded=true] {
     background: black !important;
+}
+
+.plyr--audio .plyr__controls {
+    color: black !important;
 }
 
 .CookieConsent {

@@ -3,7 +3,10 @@ import { motion } from 'framer-motion'
 
 import styled from 'styled-components'
 
+import Fuse from 'fuse.js'
+
 import Button from '../../button'
+import Search from './search'
 import Tag from './tag'
 
 const Container = styled.div`
@@ -59,6 +62,17 @@ const Container = styled.div`
     }
 `
 
+const TagsAndSearch = styled(motion.div)`
+    > div {
+        pointer-events: all;
+    }
+
+    @media(max-width: 989px) {
+        order: -1;
+    }
+`
+
+
 const Tags = styled(motion.div)`
     display: flex;
     flex-wrap: wrap;
@@ -70,6 +84,7 @@ const Tags = styled(motion.div)`
     @media(max-width: 989px) {
         order: -1;
         padding: 0 30px;
+        margin-bottom: 10px;
 
         > div {
             margin: 0.3rem;
@@ -103,6 +118,7 @@ export default function Component({ data, setActiveTags }) {
         let obj = {};
         obj.label = item;
         obj.isActive = false;
+        obj.isDisplayed = true;
 
         return obj;
        })
@@ -145,6 +161,42 @@ export default function Component({ data, setActiveTags }) {
         setTags(tagsObj)
     }
 
+    let onType = (e) => {
+        let searchInput = e.currentTarget.value
+        let tagsObj = JSON.parse(JSON.stringify(tags));
+
+        const options = {
+            includeScore: true,
+            keys: ['label'],
+            threshold: 0.5
+        }        
+
+        const fuse = new Fuse(tags, options)
+
+        const result = fuse.search(searchInput)
+
+        tagsObj.forEach((item, index) => {
+            tagsObj[index].isDisplayed = true
+        })
+
+        if(searchInput === '' || searchInput === ' ') return setTags(tagsObj)
+
+        tagsObj.forEach((item, index) => {
+            tagsObj[index].isDisplayed = false
+        })
+
+        result.forEach(itemOne => {
+            tagsObj.forEach(itemTwo => {
+                if(itemOne.item.label === itemTwo.label) {
+                    itemTwo.isDisplayed = true
+                }
+            })
+        })
+
+        setTags(tagsObj)
+
+    }
+
 
     
     return (
@@ -155,14 +207,19 @@ export default function Component({ data, setActiveTags }) {
             >
                 <Button><a><span>Filter</span></a></Button>
             </div>
-            <Tags
+            <TagsAndSearch
                 init='closed'
                 animate={filterOpen ? 'open' : 'closed'}
                 variants={variants}
             >
-                {tags.map((item, index) => <Tag data={item} index={index} selectTag={(i) => toggleTag(i)}/>)}
-                <Tag data={tags} isClear={true} clearAll={() => clearAll()} showClear={showClear}>× Clear </Tag>
-            </Tags>
+                <Search onChange={e => onType(e)}/>
+                <Tags
+
+                >
+                    {tags.map((item, index) => <Tag data={item} index={index} selectTag={(i) => toggleTag(i)}/>)}
+                    <Tag data={tags} isClear={true} clearAll={() => clearAll()} showClear={showClear}>× Clear </Tag>
+                </Tags>
+            </TagsAndSearch>
         </Container>
         )
 }

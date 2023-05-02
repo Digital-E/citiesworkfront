@@ -6,6 +6,7 @@ import Plyr from 'plyr';
 import Body from "../body"
 import Image from "../image"
 import Video from "../video"
+import Audio from "./audio"
 
 const SliceWrapper = styled.div`
     margin: 0 0 30px 0;
@@ -21,6 +22,8 @@ let renderSlice = (slice ,index) => {
           return <SliceWrapper key={slice._key} className='media-slice'><Image data={slice} hasCaption={true} /></SliceWrapper>
           case 'Text':
           return <SliceWrapper key={slice._key}><Body content={slice.text} /></SliceWrapper>
+          case 'audio':
+          return <SliceWrapper key={slice._key}><Audio data={slice} /></SliceWrapper>          
           default:
           return null
       }
@@ -28,6 +31,7 @@ let renderSlice = (slice ,index) => {
 
 
 export default function Component({ data }) {
+
 
     useEffect(() => {
         const players = Plyr.setup('.player');

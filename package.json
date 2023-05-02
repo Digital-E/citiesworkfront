@@ -19,6 +19,7 @@
     "flickity": "^3.0.0",
     "formik": "^2.2.9",
     "framer-motion": "^6.5.1",
+    "fuse.js": "^6.6.2",
     "gsap": "^3.10.4",
     "lodash": "^4.17.21",
     "lodash.deburr": "^4.1.0",

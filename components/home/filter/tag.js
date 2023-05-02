@@ -21,6 +21,10 @@ const Container = styled(motion.div)`
         background: var(--gray);
     }
 
+    &.is--hidden {
+        display: none;
+    }
+
     > span {
         position: relative;
         display: block;
@@ -66,6 +70,6 @@ export default function Component({ data, index, selectTag, children, isClear, c
             isClear ?
             <Container className={showClear ? 'is--active' : ''} onClick={() => clearAll()} variants={variants}><span>{ children }</span></Container>
             :
-            <Container className={data.isActive ? 'is--active' : ''} onClick={() => selectTag(index)} variants={variants}><span>{ data.label }</span></Container>
+            <Container className={data.isDisplayed ? (data.isActive ? 'is--active' : '') : 'is--hidden'} onClick={() => selectTag(index)} variants={variants}><span>{ data.label }</span></Container>
     )
 }

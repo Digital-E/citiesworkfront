@@ -19,7 +19,7 @@ const Element = styled(motion.div)`
   pointer-events: none;
   z-index: auto;
 
-  transition: opacity 0.5;
+  transition: opacity 0.5s;
 
   &.closing-island {
     z-index: 2 !important;
