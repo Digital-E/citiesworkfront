@@ -108,6 +108,7 @@ const Name = styled.div`
 
   @media(max-width: 989px) {
     font-size: 0.9rem;
+    -webkit-text-stroke: 0.2px white;
   }
 `
 

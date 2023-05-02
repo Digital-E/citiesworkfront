@@ -109,6 +109,7 @@ export default function Component({ data, allProjects, activeTags }) {
           pageDots: false,
           selectedAttraction: 0.07,
           friction: 0.42,
+          freeScroll: true,
           cellAlign: "center",
           percentPosition: true,
           wrapAround: true,
