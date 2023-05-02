@@ -227,7 +227,7 @@ export default function About({ data = {}, preview }) {
 
       setTimeout(() => {
           router.push("/")
-      }, 300)
+      }, 1000)
   } 
   
   let overlayVariants = {

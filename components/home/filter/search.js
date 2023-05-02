@@ -23,7 +23,7 @@ const Container = styled.div`
     }
 
     @media(max-width: 989px) {
-        margin: 0 0 10px 30px;
+        margin: 0 0 10px 35px;
 
         input, input::placeholder {
             font-size: 0.9rem;
