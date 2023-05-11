@@ -137,6 +137,11 @@ const Columns = styled.div`
 `;
 
 const GridWrapper = styled.div`
+
+    > div > div {
+      filter: blur(5px)
+    }
+
     @media(max-width: 989px) {
       display: none;
     }

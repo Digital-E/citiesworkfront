@@ -142,6 +142,7 @@ const ColRight = styled.div`
 
     @media(min-width: 989px) {
         .media-slice {
+            margin: -10px;
             height: 0;
             overflow: hidden;
         }
@@ -149,9 +150,9 @@ const ColRight = styled.div`
 `
 
 const SlicesWrapper = styled.div`
-    @media(min-width: 990px) {
-        margin-top: 150px;
-    }
+    // @media(min-width: 990px) {
+    //     margin-top: 150px;
+    // }
 `
 
 const MediaContainer = styled.div`
@@ -185,7 +186,10 @@ export default ({ preview, data }) => {
     const { state, dispatch } = context;
 
     let colLeftRef = useRef();
+    let mediaContainerRef = useRef();
     let colRightRef = useRef();
+    let nameAndTitleRef = useRef();
+    let slicesWrapperRef = useRef();
     let currentMediaIndex = useRef(-1);
 
     const isDesktop = useMediaQuery({
@@ -236,6 +240,25 @@ export default ({ preview, data }) => {
 
     }, [])
 
+    let resize = () => {
+        setTimeout(() => {
+            let mediaContainerRefPosY = mediaContainerRef.current.getBoundingClientRect().y
+            let nameAndTitleHeight = nameAndTitleRef.current.getBoundingClientRect().height
+
+            slicesWrapperRef.current.style.marginTop = `${mediaContainerRefPosY - nameAndTitleHeight - 40}px`
+        }, 10)
+    }
+
+    useEffect(() => {
+        resize();
+
+        window.addEventListener('resize', resize)
+
+        return () => {
+            window.removeEventListener('resize', resize)
+        }
+    }, [])
+
     let hasClicked = () => {
         setReveal(false)
 
@@ -268,15 +291,17 @@ export default ({ preview, data }) => {
                 <CloseButton onClick={() => hasClicked()}><img src="/icons/close.svg" /></CloseButton>
                 <ContainerInner>
                     <ColLeft ref={colLeftRef}>
-                        <MediaContainer>
+                        <MediaContainer ref={mediaContainerRef}>
                             <Slices data={ data?.slices } />
                         </MediaContainer>
                     </ColLeft>
                     <ColRight ref={colRightRef}>
                         <div>
-                            <Name>{ data?.name }</Name>
-                            <Title>{ data?.title }</Title>
-                            <SlicesWrapper>
+                            <div ref={nameAndTitleRef}>
+                                <Name>{ data?.name }</Name>
+                                <Title>{ data?.title }</Title>
+                            </div>
+                            <SlicesWrapper ref={slicesWrapperRef}>
                                 <Slices data={ data?.slices } />
                             </SlicesWrapper>
                         </div>
