@@ -123,7 +123,7 @@ let ContainerInner = styled.div`
 const ColLeft = styled.div`
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    // justify-content: center;
     overflow: scroll;
     padding-left: 30px;
 
@@ -150,9 +150,9 @@ const ColRight = styled.div`
 `
 
 const SlicesWrapper = styled.div`
-    // @media(min-width: 990px) {
-    //     margin-top: 150px;
-    // }
+    @media(max-width: 989px) {
+        margin-top: 50px !important;
+    }
 `
 
 const MediaContainer = styled.div`
@@ -241,12 +241,16 @@ export default ({ preview, data }) => {
     }, [])
 
     let resize = () => {
-        setTimeout(() => {
-            let mediaContainerRefPosY = mediaContainerRef.current.getBoundingClientRect().y
-            let nameAndTitleHeight = nameAndTitleRef.current.getBoundingClientRect().height
+        if(window.innerWidth > 989) {
+            setTimeout(() => {
+                // let mediaContainerRefPosY = mediaContainerRef.current.getBoundingClientRect().y
+                let nameAndTitleHeight = nameAndTitleRef.current.getBoundingClientRect().height
 
-            slicesWrapperRef.current.style.marginTop = `${mediaContainerRefPosY - nameAndTitleHeight - 40}px`
-        }, 10)
+                mediaContainerRef.current.style.marginTop = `${nameAndTitleHeight + 70}px`
+    
+                // slicesWrapperRef.current.style.marginTop = `${mediaContainerRefPosY - nameAndTitleHeight - 40}px`
+            }, 10)
+        }
     }
 
     useEffect(() => {
