@@ -9,6 +9,8 @@ import { getClient } from '../lib/sanity.server'
 
 import { SITE_NAME } from "../lib/constants"
 
+import Link from '../components/link'
+
 const Container = styled.div`
     position: absolute;
     top: 0;
@@ -27,6 +29,8 @@ const Container = styled.div`
 
     a {
         margin-top: 25px;
+        color: black;
+        text-decoration: none;
     }
 `
 
@@ -37,12 +41,12 @@ export default function Custom404({ data = {}, preview }) {
     return (
     <Layout preview={preview}>
       <Head>
-        <title>{SITE_NAME} | 404 - Page Not Found 🔴</title>
+        <title>{SITE_NAME} | 404 - Page Not Found</title>
       </Head>
       <Container>
           <div>
-            <h2>404 - Page Not Found 🔴</h2>
-            <a href={`/${router.asPath.split("/")[1]}`}>Go Home</a>
+            <h1>404 - Page Not Found 🔴</h1>
+            <Link href={`/`} className='p'>Go Home</Link>
           </div>
       </Container>
     </Layout>

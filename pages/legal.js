@@ -13,9 +13,10 @@ import { getClient } from '../lib/sanity.server'
 import Body from "../components/body"
 
 const Wrapper = styled.div`
-    padding: 0 0px;
+    padding: 100px;
     width: 70%;
-    margin: 0 0 100px 0;
+    margin: 0;
+    box-sizing: border-box;
 
     @media(max-width: 990px) {
         width: 100%;

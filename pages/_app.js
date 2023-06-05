@@ -34,11 +34,20 @@ function MyApp({ Component, pageProps, router }) {
 
   return (
     <StateProvider>
-      <Header data={pageProps.data?.menuData} />
-      <Ticker data={pageProps.data?.footerData} />
-      <Filter data={ pageProps.data?.homeData?.filters } setActiveTags={(data) => setActiveTags(data)}/>
-      <Grid />
-      <Islands data={pageProps.data?.homeData} allProjects={pageProps.data?.allProjectsData} activeTags={activeTags}/>
+      {
+        pageProps.data.homeData !== undefined ?
+        (
+          <>
+          <Header data={pageProps.data?.menuData} />
+          <Ticker data={pageProps.data?.footerData} />
+          <Filter data={pageProps.data?.homeData?.filters} setActiveTags={(data) => setActiveTags(data)}/>
+          <Grid />
+          <Islands data={pageProps.data?.homeData} allProjects={pageProps.data?.allProjectsData} activeTags={activeTags}/>
+          </>
+        )
+        :
+        null
+      }
       {/* <CookieConsent
         buttonText={pageProps.data?.menuData.cookieaccept}
         declineButtonText={pageProps.data?.menuData.cookierefuse}
