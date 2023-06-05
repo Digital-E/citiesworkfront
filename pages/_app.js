@@ -35,7 +35,7 @@ function MyApp({ Component, pageProps, router }) {
   return (
     <StateProvider>
       <Header data={pageProps.data?.menuData} />
-      <Ticker />
+      <Ticker data={pageProps.data?.footerData} />
       <Filter data={ pageProps.data?.homeData?.filters } setActiveTags={(data) => setActiveTags(data)}/>
       <Grid />
       <Islands data={pageProps.data?.homeData} allProjects={pageProps.data?.allProjectsData} activeTags={activeTags}/>

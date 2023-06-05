@@ -89,9 +89,7 @@ export async function getStaticProps({ preview = false, params }) {
 
   const menuData = await getClient(preview).fetch(menuQuery);
 
-  // const footerData = await getClient(preview).fetch(footerQuery, {
-  //   lang: params.lang
-  // });
+  const footerData = await getClient(preview).fetch(footerQuery);
 
   return {
     props: {
@@ -100,7 +98,7 @@ export async function getStaticProps({ preview = false, params }) {
         homeData,
         allProjectsData,
         menuData,
-        // footerData
+        footerData
       }
     }
   }

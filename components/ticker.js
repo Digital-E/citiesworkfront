@@ -93,7 +93,7 @@ const Container = styled.div`
 
 
 
-export default function Component() {
+export default function Component({ data }) {
   let [all, setAll] = useState([]);
   let containerRef = useRef();
 
@@ -174,31 +174,18 @@ export default function Component() {
 
   }, []);
 
-  useEffect(() => {
-    let ticker = document.querySelector('.ticker')
-    let list = document.querySelector('.ticker__list')
-    let clone = list.cloneNode(true)
-
-    ticker.append(clone);
-
-  }, [all])
-
-
   return (
     <Container ref={containerRef}>
       <div className='ticker'>
         <div className='ticker__list'>
+          {data.ticker.map(item => (
           <div className='ticker__item'>
-          <div className='ticker__item-element'>City Information City Information</div>
-          <div className='ticker__item-element'>City Information City Information</div>
-          <div className='ticker__item-element'>City Information City Information</div>
-          <div className='ticker__item-element'>City Information City Information</div>
-          <div className='ticker__item-element'>City Information City Information</div>
-          <div className='ticker__item-element'>City Information City Information</div>
-          <div className='ticker__item-element'>City Information City Information</div>
-          <div className='ticker__item-element'>City Information City Information</div>
-          <div className='ticker__item-dot'></div>
+            {item.subElement.map(item => (
+              <div className='ticker__item-element'>{item}</div>
+            ))}
+            <div className='ticker__item-dot'></div>
           </div>
+          ))}
           {/* {all.map(item => 
             <div className='ticker__item'>
               <div className='ticker__item-element'>{item.population.name}, {item.stats.name} - Population: {item.population.population.toLocaleString()} - {item.weather.temp}°C - Currency: {item.stats.currency.code}</div>
