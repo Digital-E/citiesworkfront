@@ -35,7 +35,7 @@ function MyApp({ Component, pageProps, router }) {
   return (
     <StateProvider>
       {
-        pageProps.data.homeData !== undefined ?
+        pageProps.data?.homeData !== undefined ?
         (
           <>
           <Header data={pageProps.data?.menuData} />
