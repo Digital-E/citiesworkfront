@@ -73,7 +73,6 @@ export default function Component({ data }) {
           })
 
           wavesurfer.load(data.audioURL);
-          wavesurfer.on('ready', function () {wavesurfer.play();});
           
           wavesurfer.on('interaction', () => {
             if(window.innerWidth < 990) {
@@ -97,6 +96,10 @@ export default function Component({ data }) {
           containerRef.current.addEventListener('mouseleave', audioMouseLeave)
 
           cursorRef.current.addEventListener('click', buttonClick)
+
+          return () => {
+            wavesurfer.destroy()
+          }
     }, [])
 
     function buttonClick(e) {
