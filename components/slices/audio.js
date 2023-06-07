@@ -1,6 +1,12 @@
 import { useEffect, useRef, useState } from "react"
 import styled from "styled-components"
-import WaveSurfer from 'wavesurfer.js'
+
+let WaveSurfer = null;
+
+if(typeof window !== "undefined") {
+    WaveSurfer = require("wavesurfer.js")
+}
+
 
 const Container = styled.div`
 
@@ -55,6 +61,7 @@ const Cursor = styled.div`
 export default function Component({ data }) {
     let containerRef = useRef()
     let cursorRef = useRef()
+    let hasInteracted = useRef(false)
     let [isPlaying, setIsPlaying] = useState(false)
     let isPlayingRef = useRef(false)
     let wavesurfer = null;
@@ -74,7 +81,8 @@ export default function Component({ data }) {
 
           wavesurfer.load(data.audioURL);
           
-          wavesurfer.on('interaction', () => {
+          wavesurfer.on('seek', () => {
+
             if(window.innerWidth < 990) {
                 setIsPlaying(true)
                 isPlayingRef.current = true
