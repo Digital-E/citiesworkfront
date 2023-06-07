@@ -33,8 +33,6 @@ export default async function preview(req, res) {
 
     if(slug === 'home') return '/'
 
-    if(document._type === 'project') return `/projects/${slug}`
-
     let split = slug.split("__");
     
     if(split.length === 1) {
