@@ -1,7 +1,6 @@
 import { useRouter } from "next/router"
 import { useState } from "react"
 import Link from './link'
-import LocaleLink from "./locale-link"
 import styled from "styled-components"
 
 import Button from './button'
@@ -142,7 +141,9 @@ export default function Header({ data }) {
   return (
     <Container className={menuOpen ? "nav--open" : ""}>
       <div
-        onClick={() => {setMenuOpen(false);}}>
+        onClick={() => {setMenuOpen(false);}}
+        className='home-button'
+        >
           <Button>
             <Link href={`/`}>
               <span>cities.work</span>

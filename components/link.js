@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import { useRouter } from "next/router"
 
-const LinkComponent = ({href, children, isMenu, isSubSubPage, isLast}) => {
+const LinkComponent = ({href, children, isMenu, isSubSubPage}) => {
 
     // Check if link is URL
 

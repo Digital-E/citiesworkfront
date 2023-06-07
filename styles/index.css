@@ -88,6 +88,7 @@ html {
 
 a {
     cursor: pointer;
+    color: black;
 }
 
 a:hover, button:hover {

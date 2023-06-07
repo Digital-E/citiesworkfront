@@ -16,7 +16,6 @@ import styled from 'styled-components'
 import Body from "../components/body"
 
 import Grid from "../components/home/grid"
-import { forEach } from 'lodash'
 
 const Container = styled(motion.div)`
     position: fixed;
@@ -26,6 +25,10 @@ const Container = styled(motion.div)`
     align-items: center;
     height: auto;
     z-index: 2;
+
+    a {
+      text-decoration: none;
+    }
 
     @media(min-width: 990px) {
       height: 100vh;
@@ -65,23 +68,25 @@ const Columns = styled.div`
     box-sizing: border-box;
 
     > div:nth-child(1) {
-      flex-basis: 25%;
+      flex-basis: 20%;
     }
 
     > div:nth-child(2) {
       display: flex;
-      justify-content: center;
-      flex-basis: 75%;
-      margin-left: -25%;
-    }
-
-    > div:nth-child(2) > div:nth-child(1) {
       text-align: center;
+      justify-content: center;
+      flex-basis: 60%;
     }
 
-    > div:nth-child(2) > div:nth-child(2) {
-      position: absolute;
-      right: 80px;
+    > div:nth-child(3) {
+      flex-basis: 20%;
+      align-self: flex-start;
+    }
+
+    > div:nth-child(3) > div {
+      width: fit-content;
+      margin-left: auto;
+      margin-right: 80px;
     }
 
     > div > div > *:nth-child(1) {
@@ -89,6 +94,8 @@ const Columns = styled.div`
     }
 
     @media(max-width: 989px) {
+      flex-direction: column;
+
       > div:nth-child(1) {
         flex-basis: auto;
       }
@@ -97,14 +104,15 @@ const Columns = styled.div`
         flex-direction: column;
         flex-basis: auto;
         margin-left: 0;
+        width: 100%;
       }
 
-      > div:nth-child(2) > div:nth-child(1) {
+      > div:nth-child(2) {
         margin-left: 0;
         text-align: left;
       }
 
-      > div:nth-child(2) > div:nth-child(2) {
+      > div:nth-child(3) {
         margin-top: 50px;
         position: relative;
         right: auto;
@@ -113,18 +121,26 @@ const Columns = styled.div`
       padding: 20px;
     }
 
-    @media(max-width: 1200px) {
+    @media(max-width: 1350px) {
       > div:nth-child(1) {
         flex-basis: 0;
+      }
+
+      > div:nth-child(2) {
+        flex-basis: 75%;
+      }
+
+      > div:nth-child(3) {
+        flex-basis: 25%;
       }
     }
 
     @media(min-width: 990px) {
-      > div:nth-child(2) > div:nth-child(1) > *:not(p) {
+      > div:nth-child(2) > *:not(p) {
         display: none;
       }
 
-      > div:nth-child(2) > div:nth-child(1) > *:nth-child(2) {
+      > div:nth-child(2) > *:nth-child(2) {
         margin-top: 0 !important;
       }
     }
@@ -215,13 +231,15 @@ export default function About({ data = {}, preview }) {
   useEffect(() => {
     setReveal(true)
 
-    document.querySelector(".filter").classList.add("hide-filter")
+    setTimeout(() => {
+      document.querySelector(".filter").classList.add("hide-filter")
+    }, 100)
 
-    Array.from(document.querySelectorAll("a")).forEach(item => item.addEventListener("click", preventDefaultClick))
+    document.querySelector(".home-button").children[0].children[0].addEventListener("click", preventDefaultClick)
 
     return () => {
       document.querySelector(".filter").classList.remove("hide-filter")
-      Array.from(document.querySelectorAll("a")).forEach(item => item.removeEventListener("click", preventDefaultClick))
+      document.querySelector(".home-button").children[0].children[0].removeEventListener("click", preventDefaultClick)
     }
   }, []);
 
@@ -289,12 +307,10 @@ export default function About({ data = {}, preview }) {
               <Columns>
                 <div></div>
                 <div>
-                  <div>
-                    <Body content={data?.aboutData?.textcolumnone} />
-                  </div>
-                  <div>
-                    <Body content={data?.aboutData?.textcolumntwo} />
-                  </div>
+                  <Body content={data?.aboutData?.textcolumnone} />
+                </div>
+                <div>
+                  <div><Body content={data?.aboutData?.textcolumntwo} /></div>
                 </div>
               </Columns>
             </ContainerInner>
