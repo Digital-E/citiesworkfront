@@ -11,6 +11,7 @@ export default async function preview(req, res) {
     return res.status(401).json({ message: 'Invalid token' })
   }
 
+
   // // Check if the post with the given `slug` exists
   // const post = await previewClient.fetch(allPostQuery, {
   //   slug: req.query.slug,
@@ -29,6 +30,10 @@ export default async function preview(req, res) {
 
 
   let splitSlug = (slug) => {
+
+    if(slug === 'home') return '/'
+
+    if(document._type === 'project') return `/projects/${slug}`
 
     let split = slug.split("__");
     
