@@ -251,7 +251,7 @@ export default function Component({ data, allProjects, activeTags }) {
 
 
       allProjects?.forEach(item => {
-        item.tags.forEach(tag => {
+        item.tags?.forEach(tag => {
           tags.forEach(tagTwo => {
             if(tag === tagTwo) {
               filteredProjectsArray.push(item)
