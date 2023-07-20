@@ -228,6 +228,11 @@ export default function Component({ data, index, dataAll, allProjects, toggle, p
 
       let match = allProjects.filter(item => item._id === reference)
 
+
+      if(match.length === 0) {
+        match = allProjects.filter(item => item._id === `drafts.${reference}`)
+      }
+
       let pathname = `/${splitSlug(match[0].slug, 0)}/${splitSlug(match[0].slug, 1)}`
       router.push(pathname)
     }
