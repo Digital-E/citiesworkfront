@@ -34,7 +34,9 @@ export default function Component({ data }) {
 
 
     useEffect(() => {
-        const players = Plyr.setup('.player');
+        setTimeout(() => {
+            const players = Plyr.setup('.player');
+        }, 0)
     },[])
 
   return (data !== null && data !== undefined) ? data.map((slice, index) => renderSlice(slice, index)) : null

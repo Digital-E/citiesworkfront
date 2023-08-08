@@ -178,7 +178,9 @@ let overlayVariants = {
     }
   }
 
-  let mediaCount = 0;
+  let isInViewportArray = [];
+
+  let prevScroll = 0;
 
 export default ({ preview, data }) => {
     //Context
@@ -191,7 +193,6 @@ export default ({ preview, data }) => {
     let nameAndTitleRef = useRef();
     let slicesWrapperRef = useRef();
     let currentMediaIndex = useRef(-1);
-    let [leftColSlices, setLeftColSlices] = useState([])
 
     const isDesktop = useMediaQuery({
         query: '(min-width: 990px)'
@@ -203,42 +204,64 @@ export default ({ preview, data }) => {
 
     let [reveal, setReveal] = useState(false);
 
-    let hasScrolled = (item, index, direction) => {
-        let scrollAmount = Math.round(colRightRef.current.scrollTop) / (colRightRef.current.scrollHeight - window.innerHeight)
+    let isInViewport = (item, index, direction) => {
 
-        let mediaIndex = Math.floor(scrollAmount * mediaCount)
+        if(item.getBoundingClientRect().y < window.innerHeight && item.getBoundingClientRect().y > 0)  {
 
-        Array.from(colLeftRef.current.children[0].children).forEach((item, index) => {
+            if(!isInViewportArray.includes(index)) {
+                if(direction === "up") {
+                    isInViewportArray.unshift(index)
+                } else {
+                    isInViewportArray.push(index)
+                }
+            }
+
+        } else {
+            if(isInViewportArray.includes(index)) {
+                let position = isInViewportArray.indexOf(index)
+                isInViewportArray.splice(position, 1)
+            }
+        }
+
+        Array.from(colLeftRef.current.children[0].children).forEach(item => {
             item.classList.remove('show-media-slice')
         })
 
-        colLeftRef.current.children[0].children[mediaIndex]?.classList.add('show-media-slice')
+        if(colRightRef.current.scrollTop >= colRightRef.current.scrollHeight - window.innerHeight) {
+            let hasMoreThanOneElementInArray = isInViewportArray.length > 1
 
+            if(hasMoreThanOneElementInArray) {
+                colLeftRef.current.children[0].children[isInViewportArray[1]]?.classList.add('show-media-slice')
+            } else {
+                colLeftRef.current.children[0].children[isInViewportArray[0]]?.classList.add('show-media-slice')
+            }
+            
+        } else {
+            colLeftRef.current.children[0].children[isInViewportArray[0]]?.classList.add('show-media-slice')
+        }
     }
 
     useEffect(() => {
         setReveal(true)
 
-        let leftColSlicesArray = data?.slices?.filter(item => {
-            if(item._type === 'video' || item._type === 'image') {
-                return item
-            }
-        })
+        setTimeout(() => {
+            Array.from(colLeftRef.current.children[0].children).forEach((item, index) => {
+                if(!item.classList.contains('media-slice')) {
+                    colLeftRef.current.children[0].removeChild(item)
+                }
 
-        setLeftColSlices(leftColSlicesArray)
+                item.classList.remove('media-slice')
+            })
 
-        mediaCount = leftColSlicesArray.length - 1
+            document.querySelectorAll('.media-slice').forEach((item, index) => isInViewport(item, index))
 
+        }, 10)
 
         colRightRef.current.addEventListener('scroll', () => {
-
-            hasScrolled();
-            
+            let scrollDirection = colRightRef.current.scrollTop - prevScroll < 0 ? "up" : "down"
+            document.querySelectorAll('.media-slice').forEach((item, index) => isInViewport(item, index, scrollDirection))
+            prevScroll = colRightRef.current.scrollTop
         })
-
-        setTimeout(() => {
-            hasScrolled();
-        }, 0)
 
     }, [])
 
@@ -296,7 +319,7 @@ export default ({ preview, data }) => {
                 <ContainerInner>
                     <ColLeft ref={colLeftRef}>
                         <MediaContainer ref={mediaContainerRef}>
-                            <Slices data={ leftColSlices } />
+                            <Slices data={ data?.slices } />
                         </MediaContainer>
                     </ColLeft>
                     <ColRight ref={colRightRef}>

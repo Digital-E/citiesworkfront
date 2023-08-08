@@ -249,11 +249,10 @@ export default function Component({ data, allProjects, activeTags }) {
 
       tags = tags.filter(item => item !== undefined)
 
-
       allProjects?.forEach(item => {
         item.tags?.forEach(tag => {
           tags.forEach(tagTwo => {
-            if(tag === tagTwo) {
+            if(tag.trim().toLowerCase() === tagTwo.trim().toLowerCase()) {
               filteredProjectsArray.push(item)
             }
           })

@@ -143,6 +143,10 @@ const Columns = styled.div`
       > div:nth-child(2) > *:nth-child(2) {
         margin-top: 0 !important;
       }
+
+      > div:nth-child(2) > * {
+        width: 80%;
+      }
     }
 
     @media(max-width: 989px) {

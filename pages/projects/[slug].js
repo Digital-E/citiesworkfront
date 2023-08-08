@@ -15,7 +15,6 @@ import SidePanel from '../../components/home/side-panel'
 import styled from "styled-components"
 
 import splitSlug from "../../lib/splitSlug"
-import { da } from 'date-fns/locale';
 
 let Container = styled.div`
     position: absolute;
