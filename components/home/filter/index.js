@@ -63,9 +63,9 @@ const Container = styled.div`
 `
 
 const TagsAndSearch = styled(motion.div)`
-    > div {
-        pointer-events: all;
-    }
+    // > div {
+    //     pointer-events: all;
+    // }
 
     @media(max-width: 989px) {
         order: -1;
@@ -77,9 +77,9 @@ const Tags = styled(motion.div)`
     display: flex;
     flex-wrap: wrap;
 
-    > div {
-        pointer-events: all;
-    }
+    // > div {
+    //     pointer-events: all;
+    // }
 
     @media(max-width: 989px) {
         order: -1;
@@ -98,10 +98,12 @@ let variants = {
         transition: {
             staggerChildren: 0.05,
             staggerDirection: -1
-        }
+        },
+        pointerEvents: 'all'
     },
     'closed': {
         opacity: 0,
+        pointerEvents: 'none'
     }
 }
 

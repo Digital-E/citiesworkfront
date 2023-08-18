@@ -190,7 +190,6 @@ export default ({ preview, data }) => {
     let colRightRef = useRef();
     let nameAndTitleRef = useRef();
     let slicesWrapperRef = useRef();
-    let currentMediaIndex = useRef(-1);
     let [leftColSlices, setLeftColSlices] = useState([])
 
     const isDesktop = useMediaQuery({
@@ -203,8 +202,12 @@ export default ({ preview, data }) => {
 
     let [reveal, setReveal] = useState(false);
 
-    let hasScrolled = (item, index, direction) => {
+    let hasScrolled = () => {
         let scrollAmount = Math.round(colRightRef.current.scrollTop) / (colRightRef.current.scrollHeight - window.innerHeight)
+
+        if(isNaN(scrollAmount)) {
+            scrollAmount = 0
+        }
 
         let mediaIndex = Math.floor(scrollAmount * mediaCount)
 
