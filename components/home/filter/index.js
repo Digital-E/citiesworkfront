@@ -13,6 +13,7 @@ const Container = styled.div`
     position: fixed;
     top: 30px;
     right: 40px;
+    left: 30px;
     z-index: 2;
     transition: 0.7s;
     pointer-events: none;
@@ -39,6 +40,7 @@ const Container = styled.div`
         bottom: 80px;
         top: auto;
         right: auto;
+        left: 0;
 
         > div:nth-child(1) {
             margin: 0;

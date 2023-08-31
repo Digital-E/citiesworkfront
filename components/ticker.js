@@ -30,7 +30,7 @@ const Container = styled.div`
   .ticker__list {
     display: flex;
     margin: 7px 0;
-    animation: ticker 120s infinite linear;
+    animation: ticker 60s infinite linear;
   }
 
   // .ticker:hover .ticker__list {
@@ -69,7 +69,7 @@ const Container = styled.div`
     margin-right: 10px;
   }
 
-  .ticker__item > div:not(:nth-last-child(2))::after {
+  .ticker__item > div::after {
     content: '';
     position: absolute;
     right: -12.5px;
@@ -79,6 +79,12 @@ const Container = styled.div`
     width: 5px;
     background: black;
     border-radius: 999px;
+  }
+
+  .ticker__item > div:last-child::after,
+  .ticker__item > div:nth-last-child(2)::after
+   {
+    display: none;
   }
 
   .ticker__item-dot {
@@ -200,7 +206,31 @@ export default function Component({ data }) {
               <div className='ticker__item-dot'></div>
             </div>
             )} */}
-        </div>
+        </div> 
+        <div className='ticker__list'>
+          {data.ticker.map(item => (
+          <div className='ticker__item'>
+            {item.subElement.map(item => (
+              <div className='ticker__item-element'>{item}</div>
+            ))}
+            <div className='ticker__item-dot'></div>
+          </div>
+          ))}
+          {/* {all.map(item => 
+            <div className='ticker__item'>
+              <div className='ticker__item-element'>{item.population.name}, {item.stats.name} - Population: {item.population.population.toLocaleString()} - {item.weather.temp}°C - Currency: {item.stats.currency.code}</div>
+              <div className='ticker__item-element'>{item.population.name}, {item.stats.name}</div>
+              <div className='ticker__item-element'>Population: {item.population.population.toLocaleString()}</div>
+              <div className='ticker__item-element'>{item.weather.temp}°C</div>
+              <div className='ticker__item-element'>Currency: {item.stats.currency.code}</div>
+              <div className='ticker__item-element'>Sex ratio: {item.stats.sex_ratio}</div>
+              <div className='ticker__item-element'>Fertility: {item.stats.fertility}</div>
+              <div className='ticker__item-element'>Co2 emissions: {item.stats.co2_emissions}</div>
+              <div className='ticker__item-element'>Forested area: {item.stats.forested_area}</div>
+              <div className='ticker__item-dot'></div>
+            </div>
+            )} */}
+        </div>               
       </div>
     </Container>
   )
