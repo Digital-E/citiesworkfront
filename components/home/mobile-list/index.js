@@ -83,10 +83,10 @@ const Component = ({ dataAll, allProjects, closeAll }) => {
 
         if(openIsland.length > 0) {
             setReveal(true)
-            document.querySelector(".filter").classList.add("hide-filter")
+            // document.querySelector(".filter").classList.add("hide-filter")
         } else {
             setReveal(false)
-            document.querySelector(".filter").classList.remove("hide-filter")
+            // document.querySelector(".filter").classList.remove("hide-filter")
         }
     
         if(island === undefined) {

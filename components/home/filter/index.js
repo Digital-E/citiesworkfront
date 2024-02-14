@@ -30,7 +30,7 @@ const Container = styled.div`
     }
 
     &.hide-filter {
-        transform: translateY(-150px);
+        transform: translateY(-110%);
     }
 
     @media(max-width: 989px) {
@@ -54,13 +54,14 @@ const Container = styled.div`
 
         &.hide-filter {
             transform: translateY(0px);
-            // opacity: 0;
+            opacity: 0;
+            pointer-events: none !important;
             transition-duration: 0.3s;
         }
 
-        // &.hide-filter > div {
-        //     pointer-events: none !important;
-        // }
+        &.hide-filter * {
+            pointer-events: none !important;
+        }
     }
 `
 

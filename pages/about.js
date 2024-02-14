@@ -136,7 +136,7 @@ const Columns = styled.div`
     }
 
     @media(min-width: 990px) {
-      > div:nth-child(2) > *:not(p) {
+      > div:nth-child(2) > div > *:not(p) {
         display: none;
       }
 
@@ -311,7 +311,9 @@ export default function About({ data = {}, preview }) {
               <Columns>
                 <div></div>
                 <div>
-                  <Body content={data?.aboutData?.textcolumnone} />
+                  <div>
+                    <Body content={data?.aboutData?.textcolumnone} />
+                  </div>
                 </div>
                 <div>
                   <div><Body content={data?.aboutData?.textcolumntwo} /></div>

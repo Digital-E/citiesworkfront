@@ -20,6 +20,7 @@ import Grid from '../components/home/grid'
 import Filter from '../components/home/filter'
 import Islands from '../components/home/islands'
 import Ticker from '../components/ticker'
+import Loader from '../components/loader'
 
 
 function MyApp({ Component, pageProps, router }) {
@@ -43,6 +44,7 @@ function MyApp({ Component, pageProps, router }) {
           <Filter data={pageProps.data?.homeData?.filters} setActiveTags={(data) => setActiveTags(data)}/>
           <Grid />
           <Islands data={pageProps.data?.homeData} allProjects={pageProps.data?.allProjectsData} activeTags={activeTags}/>
+          <Loader />
           </>
         )
         :

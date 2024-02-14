@@ -347,7 +347,7 @@ time {
         line-height: 1;
     }
     
-    p, .p {
+    p, .p, a {
         font-family: "FluxischElse Light";
         font-size: 0.9rem;
         /* letter-spacing: -0.02em; */

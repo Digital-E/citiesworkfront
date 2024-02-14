@@ -32,6 +32,11 @@ const Element = styled(motion.div)`
 
   &.hide-island {
     opacity: 0;
+    pointer-events: none !important;
+  }
+
+  &.hide-island * {
+    pointer-events: none !important;
   }
 
   @media(min-width: 990px) {
@@ -146,6 +151,7 @@ const Project = styled.div`
   &.hide-project {
     opacity: 0;
     transition-duration: 0.3s;
+    pointer-events: none !important;
   }
 
   @media(max-width: 989px) {
@@ -216,15 +222,25 @@ export default function Component({ data, index, dataAll, allProjects, toggle, p
     }, [dataAll])
 
     useEffect(() => {
-      Array.from(islandSVGRef.current.children[0].children).forEach(item => {
-        item.addEventListener("mouseenter", mouseEnter)
-        item.addEventListener("mouseleave", mouseLeave)
-        item.addEventListener("click", toggle)
-      })
+      islandSVGRef.current.children[0].addEventListener("mouseenter", mouseEnter)
+      islandSVGRef.current.children[0].addEventListener("mouseleave", mouseLeave)
+      islandSVGRef.current.children[0].addEventListener("click", toggle)
+
+      // Array.from(islandSVGRef.current.children[0].children).forEach(item => {
+      //   item.addEventListener("mouseenter", mouseEnter)
+      //   item.addEventListener("mouseleave", mouseLeave)
+      //   item.addEventListener("click", toggle)
+      // })
     }, [])
 
 
     const route = (reference) => {
+
+      // document.querySelectorAll('div').forEach(item => {
+      //   item.style.cursor = "progress!important"
+      // })
+
+      document.querySelector(".loader").classList.add("show-loader")
 
       let match = allProjects.filter(item => item._id === reference)
 

@@ -222,6 +222,8 @@ export default ({ preview, data }) => {
     useEffect(() => {
         setReveal(true)
 
+        document.querySelector(".loader").classList.remove("show-loader")
+
         let leftColSlicesArray = data?.slices?.filter(item => {
             if(item._type === 'video' || item._type === 'image') {
                 return item
@@ -230,7 +232,7 @@ export default ({ preview, data }) => {
 
         setLeftColSlices(leftColSlicesArray)
 
-        mediaCount = leftColSlicesArray.length - 1
+        mediaCount = leftColSlicesArray?.length - 1
 
 
         colRightRef.current.addEventListener('scroll', () => {
