@@ -4,7 +4,7 @@ import { useRouter } from 'next/router'
 import ErrorPage from 'next/error'
 import Layout from '../components/layout'
 import { SITE_NAME } from '../lib/constants'
-import { homeQuery, previewHomeQuery, aboutQuery, previewAboutQuery, menuQuery, footerQuery } from '../lib/queries'
+import { homeQuery, previewHomeQuery, aboutQuery, previewAboutQuery, allProjectsQuery, previewAllProjectsQuery,menuQuery, footerQuery } from '../lib/queries'
 import { getClient } from '../lib/sanity.server'
 
 import { useMediaQuery } from 'react-responsive';
@@ -337,12 +337,16 @@ export async function getStaticProps({ preview = false, params }) {
     slug: slug,
   })
 
+  let allProjectsData = await getClient(preview).fetch(allProjectsQuery)
+
   if(preview) {
     homeData = await getClient(preview).fetch(previewHomeQuery) 
 
     aboutData = await getClient(preview).fetch(previewAboutQuery, {
       slug: slug,
     })
+
+    allProjectsData = await getClient(preview).fetch(previewAllProjectsQuery)
   }
 
   // Get Menu And Footer
@@ -357,6 +361,7 @@ export async function getStaticProps({ preview = false, params }) {
       data: {
         homeData,
         aboutData,
+        allProjectsData,
         menuData,
         footerData
       }

@@ -11,6 +11,8 @@ import MobileList from "../mobile-list"
 
 import Parallax from 'parallax-js'
 
+import Link from '../../link'
+
 import { useMediaQuery } from 'react-responsive';
 
 let Flickity = null;
@@ -321,7 +323,6 @@ export default function Component({ data, allProjects, activeTags }) {
       allRef.current = copyProjects
 
   }, [activeTags])
-
 
   return (
     <Container>

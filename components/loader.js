@@ -12,6 +12,7 @@ justify-content: center;
 opacity: 0;
 pointer-events: none;
 transition: opacity 0.3s;
+z-index: 999;
 
 &.show-loader {
     opacity: 1;

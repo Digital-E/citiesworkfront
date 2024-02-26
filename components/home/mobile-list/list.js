@@ -5,8 +5,9 @@ import styled from 'styled-components'
 
 import splitSlug from "../../../lib/splitSlug"
 
-const Container = styled(motion.div)`
+import Link from '../../link'
 
+const Container = styled(motion.div)`
 `
 
 const ListItem = styled.div`
@@ -16,6 +17,23 @@ const ListItem = styled.div`
         opacity: 1;
         transition-duration: 0.2s;
     }
+
+    &#hide-line {
+        border-top: none;
+    }
+
+    a {
+        width: fit-content;
+        display: inline-block;
+        width: fit-content;
+        text-decoration: none;
+        margin: 0;
+    }
+
+    #disabled {
+        display: none;
+    }
+
 
     &.hide-project {
         opacity: 0.1;
@@ -41,11 +59,30 @@ const Component = ({ data, allProjects }) => {
       router.push(pathname)
     }    
 
+    const matchProject = (reference) => {
+
+        let match = allProjects?.filter(item => item._id === reference)
+  
+  
+        if(match?.length === 0) {
+          match = allProjects?.filter(item => item._id === `drafts.${reference}`)
+        }
+  
+        if(match === undefined || match[0] === undefined) return null
+  
+  
+        let pathname = `/${splitSlug(match[0].slug, 0)}/${splitSlug(match[0].slug, 1)}`
+  
+        return pathname
+      }
+
     return (
         <Container>
             {data?.projects?.map(item => (
-            <ListItem onClick={() => route(item.project._ref)} className={item.show ? 'show-project' : 'hide-project'}>
-                <Title>{item.title}</Title>
+            <ListItem className={item.show ? 'show-project' : 'hide-project'} id={matchProject(item.project?._ref) === null && "hide-line"}>
+                <Link href={matchProject(item.project?._ref)}>
+                    <Title>{item.title}</Title>
+                </Link>
             </ListItem>
             ))}
         </Container>

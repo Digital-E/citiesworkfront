@@ -4,7 +4,7 @@ import { useRouter } from 'next/router'
 import ErrorPage from 'next/error'
 import Layout from '../../components/layout'
 import { SITE_NAME } from '../../lib/constants'
-import { homeQuery, previewHomeQuery, projectSlugsQuery, projectQuery, previewProjectQuery, menuQuery, footerQuery } from '../../lib/queries'
+import { homeQuery, previewHomeQuery, projectSlugsQuery, projectQuery, previewProjectQuery, allProjectsQuery, previewAllProjectsQuery, menuQuery, footerQuery } from '../../lib/queries'
 import { sanityClient, getClient } from '../../lib/sanity.server'
 
 
@@ -53,7 +53,7 @@ export default function Component({ data = {}, preview }) {
           <>
               <Head>
                 <title>
-                  {data.data.title} | {SITE_NAME}
+                  {data.data.name} | {SITE_NAME}
                 </title>
                 <meta
                   name="description"
@@ -79,12 +79,15 @@ export async function getStaticProps({ params, preview = false }) {
     slug: slug,
   })
 
+  let allProjectsData = await getClient(preview).fetch(allProjectsQuery)
+
   if(preview) {
     data = await getClient(preview).fetch(previewProjectQuery, {
       slug: slug,
     })
 
     homeData = await getClient(preview).fetch(previewHomeQuery) 
+    allProjectsData = await getClient(preview).fetch(previewAllProjectsQuery)
   }
 
   // Get Menu And Footer
@@ -100,6 +103,7 @@ export async function getStaticProps({ params, preview = false }) {
       data: {
         data,
         homeData,
+        allProjectsData,
         menuData,
         footerData
       },

@@ -9,13 +9,16 @@ import { store } from "../../../store";
 
 import splitSlug from "../../../lib/splitSlug"
 
+import Link from '../../link'
+import { ref } from 'yup';
 
-const Element = styled(motion.div)`
+var _ = require('lodash');
+
+
+const Element = styled.div`
   position: absolute;
   display: flex;
-  left: ${props => props.data.islandPositionX }% !important;
-  top: ${props => props.data.islandPositionY }% !important;
-  width: ${props => props.data.islandWidth }%;
+  width: ${props => props.data.islandWidth}%;
   pointer-events: none;
   z-index: auto;
 
@@ -40,11 +43,15 @@ const Element = styled(motion.div)`
   }
 
   @media(min-width: 990px) {
+    // transform: translate(${props => props.data.islandPositionX / 100 * props.windowWidth }px, ${props => props.data.islandPositionY / 100 * props.windowHeight }px) !important;
+    left: ${props => props.data.islandPositionX / 100 * props.windowWidth}px !important;
+    top: ${props => props.data.islandPositionY / 100 * props.windowHeight}px !important;
+
     &.open-island {
       // width: 70vw !important;
-      left: 50% !important;
-      top: 50% !important;
-      transform: translate(-50%, -50%) scale(1.7) !important;
+      transform: translate(
+      ${props => (props.windowWidth / 2) - (props.islandWidth / 2) - (props.data.islandPositionX / 100 * props.windowWidth)}px,
+      ${props => (props.windowHeight / 2) - (props.islandHeight / 2) - (props.data.islandPositionY / 100 * props.windowHeight)}px) scale(1.7) !important;
       z-index: 2 !important;
       transition: opacity 0.5s, transform 1s, left 1s, top 1s;
     }
@@ -85,11 +92,6 @@ const Element = styled(motion.div)`
   }
 
   @media(max-width: 989px) {
-    // display: ${props => props.platform === 'desktop' ? 'none' : 'block'};
-    // left: ${props => parseInt(props.data.islandPositionX) - 8 }% !important;
-    // top: ${props => parseInt(props.data.islandPositionY) + 10 }% !important;
-    left: 0 !important;
-    top: 0 !important;
     width: 80% !important;
     height: auto;
     transition: opacity 0.5s, transform 0s, left 0s, top 0s;
@@ -118,6 +120,7 @@ const Name = styled.div`
 `
 
 const Projects = styled.div`
+
 `
 
 const Project = styled.div`
@@ -130,8 +133,22 @@ const Project = styled.div`
   pointer-events: all;
   -webkit-text-stroke: 0.3px white;
 
+  #disabled {
+    display: none;
+    pointer-events: none;
+  }
+
   display: flex;
   align-items: center;
+
+  a {
+    text-decoration: none !important;
+    margin: 0;
+    padding: 0;
+    font-family: FluxischElse Light;
+    font-size: 1rem;
+    -webkit-text-stroke: 0.3px white;
+  }
 
   img {
       width: 10px;
@@ -159,23 +176,6 @@ const Project = styled.div`
   }
 `
 
-let variants = {
-    "open": {
-      width: "70%",
-      left: "50%",
-      top: "50%",
-      x: "-50%",
-      y: "-50%",
-      zIndex: "2 !important",
-      transition: "1s"
-    },
-    "close": {
-      width: "40%",
-      transitionEnd: {
-        transition: "0s",
-      },
-    }
-  }
 
 let closingIslandTimeout = null;
 
@@ -184,6 +184,12 @@ export default function Component({ data, index, dataAll, allProjects, toggle, p
     //Context
     const context = useContext(store);
     const { state, dispatch } = context;
+
+    let [windowHeight, setWindowHeight] = useState(0);
+    let [windowWidth, setWindowWidth] = useState(0);
+
+    let [islandHeight, setIslandHeight] = useState(0);
+    let [islandWidth, setIslandWidth] = useState(0);
 
     let router = useRouter();
 
@@ -226,6 +232,13 @@ export default function Component({ data, index, dataAll, allProjects, toggle, p
       islandSVGRef.current.children[0].addEventListener("mouseleave", mouseLeave)
       islandSVGRef.current.children[0].addEventListener("click", toggle)
 
+      setWindowWidth(window.innerWidth)
+      setWindowHeight(window.innerHeight)
+
+
+      setIslandHeight(elRef.current.getBoundingClientRect().height)
+      setIslandWidth(elRef.current.getBoundingClientRect().width)
+
       // Array.from(islandSVGRef.current.children[0].children).forEach(item => {
       //   item.addEventListener("mouseenter", mouseEnter)
       //   item.addEventListener("mouseleave", mouseLeave)
@@ -233,35 +246,41 @@ export default function Component({ data, index, dataAll, allProjects, toggle, p
       // })
     }, [])
 
+    window.addEventListener("resize", _.debounce(() => {
+      setWindowWidth(window.innerWidth)
+      setWindowHeight(window.innerHeight)
+      setIslandHeight(elRef.current.getBoundingClientRect().height)
+      setIslandWidth(elRef.current.getBoundingClientRect().width)
+    }, 100))
 
-    const route = (reference) => {
+    const matchProject = (reference) => {
 
-      // document.querySelectorAll('div').forEach(item => {
-      //   item.style.cursor = "progress!important"
-      // })
-
-      document.querySelector(".loader").classList.add("show-loader")
-
-      let match = allProjects.filter(item => item._id === reference)
+      let match = allProjects?.filter(item => item._id === reference)
 
 
-      if(match.length === 0) {
-        match = allProjects.filter(item => item._id === `drafts.${reference}`)
+      if(match?.length === 0) {
+        match = allProjects?.filter(item => item._id === `drafts.${reference}`)
       }
 
-      let pathname = `/${splitSlug(match[0].slug, 0)}/${splitSlug(match[0].slug, 1)}`
-      router.push(pathname)
-    }
+      if(match === undefined || match[0] === undefined) return null
 
+
+      let pathname = `/${splitSlug(match[0].slug, 0)}/${splitSlug(match[0].slug, 1)}`
+
+      return pathname
+    }
 
   return (
         <Element 
             ref={elRef} 
             data={data} 
             data-depth={data.dataDepth}
-            variants={variants}
             className={data.show ? 'show-island' : 'hide-island'}
             platform={platform}
+            windowHeight={windowHeight}
+            windowWidth={windowWidth}
+            islandHeight={islandHeight}
+            islandWidth={islandWidth}
             >
             <div>
                 <Name x={data.titlePositionX} y={data.titlePositionY} className='island-text'>{data.title}</Name>
@@ -272,11 +291,12 @@ export default function Component({ data, index, dataAll, allProjects, toggle, p
                         y={item.titlePositionY}
                         onMouseOver={() => mouseEnter()}
                         onMouseLeave={() => mouseLeave()}
-                        onClick={() => route(item.project._ref)}
                         className={`island-text ${item.show ? 'show-project' : 'hide-project'}`}
                         >
+                          <Link href={matchProject(item.project?._ref)}>
                             <img src={`/icons/keys/${2}.svg`} />
                             {item.title}
+                          </Link>
                     </Project>
                     )}
                 </Projects>

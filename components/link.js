@@ -11,11 +11,15 @@ const LinkComponent = ({href, children, isMenu, isSubSubPage}) => {
 
     let router = useRouter()
 
-    let newUrl = (href !==  null && href !== undefined )  ? href : "/";
+    let newUrl = (href !==  null && href !== undefined )  ? href : "";
 
     let split = (href !==  null && href !== undefined ) && href.split("__");
 
     // Refactor Link if it has underscores
+
+    if(split.length === 2 && href !== null) {
+        newUrl = `/${split[0]}/${split[1]}`
+    }
 
     if(split.length === 3 && href !== null) {
 
@@ -52,7 +56,7 @@ const LinkComponent = ({href, children, isMenu, isSubSubPage}) => {
 
     return (
         <Link href={newUrl}>
-            <a target={isURL ? "_blank" : undefined} className={router.asPath === newUrl ? "active-link" : subPageIsActive ? "active-link" : ""}>{children}</a>
+            <a target={isURL ? "_blank" : undefined} id={newUrl === "" ? "disabled" : ""} className={router.asPath === newUrl ? "active-link" : subPageIsActive ? "active-link" : ""}>{children}</a>
         </Link>
     )
 
