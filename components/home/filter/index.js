@@ -85,9 +85,12 @@ const Tags = styled(motion.div)`
     // }
 
     @media(max-width: 989px) {
+        height: 400px;
+        overflow: scroll;
         order: -1;
         padding: 0 30px;
         margin-bottom: 10px;
+        
 
         > div {
             margin: 0.3rem;
@@ -99,8 +102,8 @@ let variants = {
     'open': {
         opacity: 1,
         transition: {
-            staggerChildren: 0.05,
-            staggerDirection: -1
+            staggerChildren: 0.02,
+            staggerDirection: 1
         },
         pointerEvents: 'all'
     },

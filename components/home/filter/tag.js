@@ -10,7 +10,6 @@ const Container = styled(motion.div)`
     background: white;
     transition: background 0.2s;
     width: fit-content;
-    // margin-right: 0.3rem;
     margin: 0.3rem;
     cursor: pointer;
 

@@ -18,15 +18,25 @@ const Container = styled(motion.div)`
     background: white;
     border-radius: 20px;
     border: 1px solid black;
-    padding: 20px;
 
     @media(min-width: 990px) {
         display: none !important;
     }
 `
 
+const InnerContainer = styled.div`
+    overflow: scroll;
+    height: 100%;
+
+    > div:nth-child(2) {
+        padding: 0 20px 20px 20px;
+    }
+`
+
+
 const Title = styled.h3`
     margin-bottom: 20px;
+    padding: 20px 20px 0 20px;
 
     @media(max-width: 989px) {
         font-size: 2rem;
@@ -102,8 +112,10 @@ const Component = ({ dataAll, allProjects, closeAll }) => {
     return (
         <Container initial="closed" animate={reveal ? "open" : "closed"} variants={variants}>
             <CloseButton onClick={() => closeAll()}><img src="/icons/close.svg" /></CloseButton>
-            <Title>{island?.title}</Title>
-            <List data={island} allProjects={allProjects} />
+            <InnerContainer>
+                <Title>{island?.title}</Title>
+                <List data={island} allProjects={allProjects} />
+            </InnerContainer>
         </Container>
     )
 }

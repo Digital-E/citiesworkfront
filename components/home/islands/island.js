@@ -96,6 +96,11 @@ const Element = styled.div`
     height: auto;
     transition: opacity 0.5s, transform 0s, left 0s, top 0s;
 
+    &.hide-island {
+      opacity: 1;
+      filter: blur(5px);
+    }
+
 
     > div > div:nth-child(2)
      {
