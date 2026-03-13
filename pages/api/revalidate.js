@@ -35,6 +35,12 @@ export default async function revalidate(req, res) {
     return res.status(400).json({ message: invalidId })
   }
 
+  // Ignore draft documents to prevent excessive revalidations on every keystroke
+  if (id.startsWith('drafts.')) {
+    log('Draft document ignored')
+    return res.status(200).json({ message: 'Draft ignored' })
+  }
+
   log(`Querying post slug for _id '${id}', type '${_type}' ..`)
   const slug = await sanityClient.fetch(getQueryForType(_type), { id })
   const slugs = (Array.isArray(slug) ? slug : [slug]).map(
