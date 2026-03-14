@@ -76,7 +76,8 @@ export default function Component({ data }) {
             // Optionally, specify the spacing between bars
             barGap: 1,
             // And the bar radius
-            barRadius: 2,            
+            barRadius: 2,
+            preload: 'metadata',            
           })
 
           wavesurfer.load(data.audioURL);

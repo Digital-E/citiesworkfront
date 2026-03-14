@@ -298,7 +298,7 @@ export default function Component({ data, index, dataAll, allProjects, toggle, p
                         onMouseLeave={() => mouseLeave()}
                         className={`island-text ${item.show ? 'show-project' : 'hide-project'}`}
                         >
-                          <Link href={matchProject(item.project?._ref)}>
+                          <Link href={matchProject(item.project?._ref)} prefetch={false}>
                             <img src={`/icons/keys/${2}.svg`} />
                             {item.title}
                           </Link>
