@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from 'react'
+import { useEffect, useState, useRef, useCallback } from 'react'
 import styled from 'styled-components'
 
 import { gsap } from "gsap/dist/gsap";
@@ -93,6 +93,13 @@ export default function Component({ data, allProjects, activeTags }) {
   let [overlayOpen, setOverlayOpen] = useState(false);
   let carouselRef = useRef();
 
+  const [pickerMode, setPickerMode] = useState(false)
+  const [selectedKey, setSelectedKey] = useState(null)
+
+  const handlePlace = useCallback((x, y) => {
+    window.parent.postMessage({type: 'pickerResult', x, y}, '*')
+  }, [])
+
   let allRef = useRef(all);
 
   const isDesktop = useMediaQuery({
@@ -144,8 +151,12 @@ export default function Component({ data, allProjects, activeTags }) {
   }
 
   useEffect(() => {
-    
+    const isPicker = new URLSearchParams(window.location.search).get('picker') === 'true'
+    setPickerMode(isPicker)
+
     setAll(data.islands)
+
+    if (isPicker) return
 
     if(window.innerWidth < 990) {
       setTimeout(() => {
@@ -327,8 +338,21 @@ export default function Component({ data, allProjects, activeTags }) {
   return (
     <Container>
       <Carousel id="scene" ref={carouselRef}>
-        {all.map((item, index) => 
-          <Island data={item} dataAll={all} index={index} toggle={() => clickIsland(index)} prevOpen={prevOpen} allProjects={allProjects} activeTags={activeTags} platform='desktop'/>
+        {all.map((item, index) =>
+          <Island
+            data={item}
+            dataAll={all}
+            index={index}
+            toggle={() => clickIsland(index)}
+            prevOpen={prevOpen}
+            allProjects={allProjects}
+            activeTags={activeTags}
+            platform='desktop'
+            pickerMode={pickerMode}
+            selectedKey={selectedKey}
+            onSelectIsland={setSelectedKey}
+            onPlace={handlePlace}
+          />
         )}
        <Overlay animate={overlayOpen ? "visible" : "hidden"} variants={overlayVariants} onClick={() => closeAll()}/>
       </Carousel>

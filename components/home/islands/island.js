@@ -132,7 +132,7 @@ const Project = styled.div`
   position: absolute;
   top: ${props => props.y}%;
   left: ${props => props.x}%;
-  transform: translate(-50%, -50%);
+  transform: ${props => props.pickerposition ? 'none' : 'translate(-50%, -50%)'};
   font-family: FluxischElse Light;
   font-size: 1rem;
   pointer-events: all;
@@ -185,7 +185,7 @@ const Project = styled.div`
 let closingIslandTimeout = null;
 
 
-export default function Component({ data, index, dataAll, allProjects, toggle, prevOpen, platform }) {
+export default function Component({ data, index, dataAll, allProjects, toggle, prevOpen, platform, pickerMode = false, selectedKey = null, onSelectIsland, onPlace }) {
     //Context
     const context = useContext(store);
     const { state, dispatch } = context;
@@ -233,22 +233,19 @@ export default function Component({ data, index, dataAll, allProjects, toggle, p
     }, [dataAll])
 
     useEffect(() => {
-      islandSVGRef.current.children[0].addEventListener("mouseenter", mouseEnter)
-      islandSVGRef.current.children[0].addEventListener("mouseleave", mouseLeave)
-      islandSVGRef.current.children[0].addEventListener("click", toggle)
+      const isPicker = new URLSearchParams(window.location.search).get('picker') === 'true'
+
+      if (!isPicker) {
+        islandSVGRef.current.children[0].addEventListener("mouseenter", mouseEnter)
+        islandSVGRef.current.children[0].addEventListener("mouseleave", mouseLeave)
+        islandSVGRef.current.children[0].addEventListener("click", toggle)
+      }
 
       setWindowWidth(window.innerWidth)
       setWindowHeight(window.innerHeight)
 
-
       setIslandHeight(elRef.current.getBoundingClientRect().height)
       setIslandWidth(elRef.current.getBoundingClientRect().width)
-
-      // Array.from(islandSVGRef.current.children[0].children).forEach(item => {
-      //   item.addEventListener("mouseenter", mouseEnter)
-      //   item.addEventListener("mouseleave", mouseLeave)
-      //   item.addEventListener("click", toggle)
-      // })
     }, [])
 
     window.addEventListener("resize", _.debounce(() => {
@@ -275,6 +272,7 @@ export default function Component({ data, index, dataAll, allProjects, toggle, p
       return pathname
     }
 
+
   return (
         <Element 
             ref={elRef} 
@@ -288,12 +286,13 @@ export default function Component({ data, index, dataAll, allProjects, toggle, p
             islandWidth={islandWidth}
             >
             <div>
-                <Name x={data.titlePositionX} y={data.titlePositionY} className='island-text'>{data.title}</Name>
+                <Name x={data?.titlePosition?.x ? data.titlePosition.x : data.titlePositionX} y={data?.titlePosition?.y ? data.titlePosition.y : data.titlePositionY} className='island-text'>{data.title}</Name>
                 <Projects>
                     {data.projects?.map(item => 
-                    <Project 
-                        x={item.titlePositionX} 
-                        y={item.titlePositionY}
+                    <Project
+                        x={item.pickerPosition ? item.pickerPosition.x : item.titlePositionX}
+                        y={item.pickerPosition ? item.pickerPosition.y : item.titlePositionY}
+                        pickerposition={item.pickerPosition ? 'true' : undefined}
                         onMouseOver={() => mouseEnter()}
                         onMouseLeave={() => mouseLeave()}
                         className={`island-text ${item.show ? 'show-project' : 'hide-project'}`}
@@ -305,12 +304,51 @@ export default function Component({ data, index, dataAll, allProjects, toggle, p
                     </Project>
                     )}
                 </Projects>
-                <div                
+                    <div
                   ref={islandSVGRef}
                   className='island-svg'
                   dangerouslySetInnerHTML={{__html: data.svg}}
                 />
-          </div>
+            </div>
+
+            {pickerMode && (
+              <div
+                onClick={(e) => {
+                  e.stopPropagation()
+                  if (!selectedKey) {
+                    onSelectIsland(data._key)
+                  } else if (selectedKey === data._key) {
+                    const rect = elRef.current.getBoundingClientRect()
+                    const x = ((e.clientX - rect.left) / rect.width * 100).toFixed(1)
+                    const y = ((e.clientY - rect.top) / rect.height * 100).toFixed(1)
+                    onPlace(x, y)
+                  }
+                }}
+                style={{
+                  position: 'absolute',
+                  inset: 0,
+                  zIndex: 10,
+                  pointerEvents: 'all',
+                  cursor: !selectedKey ? 'pointer' : selectedKey === data._key ? 'crosshair' : 'default',
+                  background: selectedKey && selectedKey !== data._key ? 'rgba(0,0,0,0.5)' : 'transparent',
+                  transition: 'background 0.3s',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}
+              >
+                {!selectedKey && (
+                  <span style={{color: 'white', fontSize: '0.7rem', fontFamily: 'sans-serif', background: 'rgba(0,0,0,0.6)', padding: '3px 8px', borderRadius: 3, pointerEvents: 'none'}}>
+                    Select island
+                  </span>
+                )}
+                {selectedKey === data._key && (
+                  <span style={{position: 'absolute', top: 8, left: '50%', transform: 'translateX(-50%)', whiteSpace: 'nowrap', color: 'white', fontSize: '0.7rem', fontFamily: 'sans-serif', background: 'rgba(0,0,0,0.6)', padding: '3px 8px', borderRadius: 3, pointerEvents: 'none'}}>
+                    Click to place title
+                  </span>
+                )}
+              </div>
+            )}
         </Element>
   )
 }
