@@ -1,6 +1,5 @@
 import { useEffect } from "react"
 import styled from "styled-components"
-import Plyr from 'plyr';
 
 
 import Body from "../body"
@@ -35,7 +34,9 @@ export default function Component({ data }) {
 
     useEffect(() => {
         setTimeout(() => {
-            const players = Plyr.setup('.player');
+            import('plyr').then(({ default: Plyr }) => {
+                Plyr.setup('.player');
+            })
         }, 0)
     },[])
 
