@@ -80,7 +80,7 @@ const Component = ({ data, allProjects }) => {
         <Container>
             {data?.projects?.map(item => (
             <ListItem className={item.show ? 'show-project' : 'hide-project'} id={matchProject(item.project?._ref) === null && "hide-line"}>
-                <Link href={matchProject(item.project?._ref)}>
+                <Link href={matchProject(item.project?._ref)} prefetch={false}>
                     <Title>{item.title}</Title>
                 </Link>
             </ListItem>
