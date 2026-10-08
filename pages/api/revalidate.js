@@ -1,20 +1,28 @@
 import { isValidRequest } from '@sanity/webhook'
 import { sanityClient } from '../../lib/sanity.server'
+import splitSlug from '../../lib/splitSlug'
 
-const AUTHOR_UPDATED_QUERY = `
-  *[_type == "author" && _id == $id] {
-    "slug": *[_type == "post" && references(^._id)].slug.current
-  }["slug"][]`
-const POST_UPDATED_QUERY = `*[_type == "post" && _id == $id].slug.current`
+const PROJECT_SLUG_QUERY = `*[_type == "project" && _id == $id][0].slug.current`
+const LEGAL_SLUG_QUERY = `*[_type == "legal" && _id == $id][0].slug.current`
 
-const getQueryForType = (type) => {
+const getStaleRoutes = async (type, id) => {
   switch (type) {
-    case 'author':
-      return AUTHOR_UPDATED_QUERY
-    case 'post':
-      return POST_UPDATED_QUERY
+    case 'home':
+      return ['/']
+    case 'about':
+      return ['/about']
+    case 'project': {
+      const slug = await sanityClient.fetch(PROJECT_SLUG_QUERY, { id })
+      // Project title positions are picked/displayed on the homepage too
+      return slug ? ['/', `/projects/${splitSlug(slug, 1)}`] : ['/']
+    }
+    case 'legal': {
+      const slug = await sanityClient.fetch(LEGAL_SLUG_QUERY, { id })
+      return slug ? [`/legal/${slug}`] : []
+    }
     default:
-      throw new TypeError(`Unknown type: ${type}`)
+      // menu/footer and anything else render on every page via the shared layout
+      return ['/']
   }
 }
 
@@ -41,14 +49,11 @@ export default async function revalidate(req, res) {
     return res.status(200).json({ message: 'Draft ignored' })
   }
 
-  log(`Querying post slug for _id '${id}', type '${_type}' ..`)
-  const slug = await sanityClient.fetch(getQueryForType(_type), { id })
-  const slugs = (Array.isArray(slug) ? slug : [slug]).map(
-    (_slug) => `/posts/${_slug}`
-  )
-  const staleRoutes = ['/', ...slugs]
+  log(`Resolving stale routes for _id '${id}', type '${_type}' ..`)
 
   try {
+    const staleRoutes = await getStaleRoutes(_type, id)
+
     await Promise.all(
       staleRoutes.map((route) => res.unstable_revalidate(route))
     )
