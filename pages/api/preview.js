@@ -21,9 +21,14 @@ let splitSlug = (slug, document) => {
   }
 }
 
+// Keep preview mode short-lived so it only covers the page being previewed,
+// not the visitor's whole browsing session afterward (which would otherwise
+// bypass the CDN cache for every page they click through next).
+const PREVIEW_MAX_AGE_SECONDS = 120
+
 function redirectToPreview(res, slug, document) {
   // Enable Preview Mode by setting the cookies
-  res.setPreviewData({})
+  res.setPreviewData({}, { maxAge: PREVIEW_MAX_AGE_SECONDS })
   // Redirect to a preview capable route
   res.writeHead(307, { Location: splitSlug(slug, document) })
   res.end()
