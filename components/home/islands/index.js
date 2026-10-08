@@ -98,6 +98,7 @@ export default function Component({ data, allProjects, activeTags }) {
 
   const handlePlace = useCallback((x, y) => {
     window.parent.postMessage({type: 'pickerResult', x, y}, '*')
+    setSelectedKey(null)
   }, [])
 
   let allRef = useRef(all);

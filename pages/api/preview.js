@@ -26,11 +26,11 @@ let splitSlug = (slug, document) => {
 // bypass the CDN cache for every page they click through next).
 const PREVIEW_MAX_AGE_SECONDS = 120
 
-function redirectToPreview(res, slug, document) {
+function redirectToPreview(res, slug, document, extraQuery = '') {
   // Enable Preview Mode by setting the cookies
   res.setPreviewData({}, { maxAge: PREVIEW_MAX_AGE_SECONDS })
   // Redirect to a preview capable route
-  res.writeHead(307, { Location: splitSlug(slug, document) })
+  res.writeHead(307, { Location: splitSlug(slug, document) + extraQuery })
   res.end()
 }
 
@@ -45,6 +45,11 @@ export default async function preview(req, res) {
   if (secret && req.query.secret !== secret) {
     return res.status(401).json({ message: 'Invalid secret' })
   }
+
+  // Forwarded to the destination page, e.g. so the Studio's title-position
+  // picker still lands in picker mode after the preview redirect.
+  const extraQuery = req.query.picker === 'true' ? '?picker=true' : ''
+
   // If no slug is provided open preview mode on the frontpage
   if (!req.query.slug) {
     return redirectToPreview(res, '/')
@@ -63,5 +68,5 @@ export default async function preview(req, res) {
 
   // Redirect to the path from the fetched post
   // We don't redirect to req.query.slug as that might lead to open redirect vulnerabilities
-  redirectToPreview(res, document.slug, document)
+  redirectToPreview(res, document.slug, document, extraQuery)
 }

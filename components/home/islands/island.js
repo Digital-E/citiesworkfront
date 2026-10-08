@@ -132,7 +132,7 @@ const Project = styled.div`
   position: absolute;
   top: ${props => props.y}%;
   left: ${props => props.x}%;
-  transform: translate(-50%, -50%);
+  ${props => props.legacy ? 'transform: translate(-50%, -50%);' : ''}
   font-family: FluxischElse Light;
   font-size: 1rem;
   pointer-events: all;
@@ -292,6 +292,7 @@ export default function Component({ data, index, dataAll, allProjects, toggle, p
                     <Project
                         x={item.pickerPosition ? item.pickerPosition.x : item.titlePositionX}
                         y={item.pickerPosition ? item.pickerPosition.y : item.titlePositionY}
+                        legacy={!item.pickerPosition}
                         onMouseOver={() => mouseEnter()}
                         onMouseLeave={() => mouseLeave()}
                         className={`island-text ${item.show ? 'show-project' : 'hide-project'}`}

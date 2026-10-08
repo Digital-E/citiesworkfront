@@ -86,7 +86,7 @@ export async function getStaticProps({ params, preview = false }) {
       slug: slug,
     })
 
-    homeData = await getClient(preview).fetch(previewHomeQuery) 
+    homeData = await getClient(preview).fetch(previewHomeQuery)
     allProjectsData = await getClient(preview).fetch(previewAllProjectsQuery)
   }
 
