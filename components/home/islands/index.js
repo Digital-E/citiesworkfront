@@ -155,35 +155,59 @@ export default function Component({ data, allProjects, activeTags }) {
     const isPicker = new URLSearchParams(window.location.search).get('picker') === 'true'
     setPickerMode(isPicker)
 
-    setAll(data.islands)
+    // Island SVGs are fetched separately (cached, outside getStaticProps) and
+    // merged in here so everything downstream (Island.js included) sees the
+    // exact same shape of `data.islands` it always has.
+    // `show` defaults to true here (same default the activeTags effect below
+    // uses when no filters are active) since that effect bails out early on
+    // mount if `all` isn't populated yet, which would otherwise leave
+    // `data.show` undefined -> islands stuck at opacity 0 via .hide-island.
+    const withDefaults = (islands) => islands.map((island) => ({
+      ...island,
+      show: true,
+      projects: island.projects?.map((project) => ({ ...project, show: true })),
+    }))
 
-    if (isPicker) return
+    fetch('/api/island-svgs')
+      .then((res) => res.json())
+      .then((svgByKey) => {
+        return withDefaults(data.islands).map((island) => ({
+          ...island,
+          svg: svgByKey[island._key],
+        }))
+      })
+      .catch(() => withDefaults(data.islands))
+      .then((islandsWithSvg) => {
+        setAll(islandsWithSvg)
 
-    if(window.innerWidth < 990) {
-      setTimeout(() => {
-        initCarousel();
-      }, 0)
-    } else {
-      initParallax();
-    }
+        if (isPicker) return
 
-    window.addEventListener("resize", () => {
-      if(window.innerWidth > 989) {
-          destroyCarousel();
-          if(!parallaxInstance) {
-            initParallax();
+        if(window.innerWidth < 990) {
+          setTimeout(() => {
+            initCarousel();
+          }, 0)
+        } else {
+          initParallax();
+        }
+
+        window.addEventListener("resize", () => {
+          if(window.innerWidth > 989) {
+              destroyCarousel();
+              if(!parallaxInstance) {
+                initParallax();
+              } else {
+                parallaxInstance?.enable()
+              }
+              // desktopResizeCount += 1
+              // hasPositioned = false;
+              // positionCards();
           } else {
-            parallaxInstance?.enable()
+              // desktopResizeCount = -1
+              initCarousel();
+              destroyParallax();
           }
-          // desktopResizeCount += 1
-          // hasPositioned = false;
-          // positionCards();
-      } else {
-          // desktopResizeCount = -1
-          initCarousel();
-          destroyParallax();
-      }
-    })      
+        })
+      })
 
   }, []);
 
