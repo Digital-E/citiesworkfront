@@ -179,6 +179,7 @@ export default function Component({ data, allProjects, activeTags }) {
       .catch(() => withDefaults(data.islands))
       .then((islandsWithSvg) => {
         setAll(islandsWithSvg)
+        allRef.current = islandsWithSvg
 
         if (isPicker) return
 
